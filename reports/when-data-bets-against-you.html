@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>When Data Bets Against You</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="report-style.css" />
+</head>
+<body>
+<a class="back" href="../index.html">← Back to portfolio</a>
+<header id="title-block-header">
+<h1 class="title">When Data Bets Against You</h1>
+</header>
+<p><strong>When Data Bets Against You: Ethical Data Concerns in Sports
+Betting Platforms</strong></p>
+<p><strong>Introduction</strong></p>
+<p>Sports wagering in the United States has undergone significant
+transformation in recent years. Legal reforms, the proliferation of
+mobile platforms, and the integration of real-time sports analytics have
+enabled unprecedented access to betting, allowing individuals to place
+wagers conveniently from mobile devices during live events. This
+increased accessibility has prompted public health concerns, as sports
+wagering is linked not only to gambling disorders but also to a broader
+spectrum of impulsive and potentially addictive behaviors.</p>
+<p>The ethical distinctiveness of this environment arises from the
+integration of artificial intelligence and behavioral data. Online
+betting platforms function not only as hosts for wagers but also as
+continuous collectors of user data, including session length, deposit
+frequency, loss profiles, and responses to promotions. This information
+is utilized to adapt and personalize the user experience. Research
+indicates that such technological personalization can influence risk
+perception, decision-making, and betting persistence, even when the
+underlying algorithmic mechanisms remain opaque to users.</p>
+<p>This paper contends that the central ethical issue is not merely the
+extensive data collection by platforms, but the potential for these data
+to be used primarily to increase user engagement rather than to mitigate
+harm. Predictive systems capable of detecting early indicators of
+problem gambling can also be leveraged for user retention and targeted
+promotional offers. Adopting the perspective of an ethical AI and data
+science advisor within the sports betting sector, this analysis examines
+the key decisions, stakeholders, data practices, and governance
+structures that influence whether these technologies protect users or
+expose them to greater risk.</p>
+<p><strong>Background and Literature Review</strong></p>
+<p>The expansion of legal sports betting has been rapid. Grubbs and
+Kraus (2023) frame the current period as one of unprecedented access to
+wagering, arguing that modern sports betting is now closely tied to
+risky, potentially addictive behavior. This matters not solely as a
+market trend but as a behavioral and public health issue.</p>
+<p>At the center of this environment is algorithmic personalization.
+Mihai et al. (2025) find that online platforms use technology to tailor
+promotions and user experiences based on observed behavior, with effects
+on risk perception and betting persistence. The authors are careful to
+describe their conclusions as inferential rather than definitively
+causal, which is an important qualifier: even without perfect visibility
+into proprietary algorithms, there is strong reason to question systems
+designed to adapt to users, especially when those users may already be
+vulnerable. Their study also raises the concern that algorithms may
+anticipate emotional vulnerability and deliver personalized stimuli
+precisely when users are most likely to keep betting.</p>
+<p>Research on harm detection shows that platforms often already have
+enough data to identify at-risk users. Auer and Griffiths (2023)
+analyzed account-level data from over 1,200 online casino players and
+found that self-reported problem gambling could be predicted with high
+accuracy using behavioral signals: the amount of money lost per session,
+the frequency of deposits, and the frequency of account depletion. This
+is significant because it reframes the ethical problem. The question is
+not whether gambling companies have access to meaningful data. The
+harder question is what they do with it.</p>
+<p>That concern is reinforced by Marionneau et al. (2025), whose scoping
+review of gambling risk assessment models finds that most tools identify
+harm that has already occurred rather than forecasting future harm. They
+also note that industry involvement in model development is common and
+that evaluation practices are often weak or inconsistent. A system can
+appear technically sophisticated while still relying on poorly justified
+thresholds, aggregated data, and reactive rather than preventive
+interventions. Crucially, when operators control the data, define the
+warning signs, and evaluate their own models, outside oversight is
+structurally limited.</p>
+<p>Binesh and Ghaharian (2025) identify six recurring themes in AI
+ethics literature on gambling: explainability, exploitation, algorithmic
+flaws, consumer rights, accountability, and human-in-the-loop oversight.
+These are useful organizing concepts because they shift the frame from
+efficiency to responsibility. Explainability matters because users
+generally cannot see how their behavior is being profiled.
+Accountability matters because the consequences of failure, including
+financial harm and addiction escalation, are severe and often
+irreversible.</p>
+<p>Finally, Najjar (2023) situates sports betting within a broader
+sports-data ecosystem, noting that integrating AI and analytics into
+sports raises legal and ethical concerns about data protection, privacy,
+and profiling. This broader context matters: the ethical issues in
+sports wagering are not isolated. They reflect a wider pattern in which
+behavioral data is monetized in ways that create real risks for users
+while remaining largely invisible to them.</p>
+<p><strong>Role, Sector, and Problem Definition</strong></p>
+<p>This paper approaches the issue from the perspective of an ethical AI
+and data science advisor working in the sports betting sector. That role
+is not about improving technical performance or business efficiency. It
+is about evaluating whether data-driven systems are designed and
+deployed in ways that are responsible, transparent, and protective of
+users, asking not just whether a model works, but what it is optimizing
+for and whose interests it serves.</p>
+<p>The sector examined is app-based sports betting platforms that rely
+on behavioral data, predictive modeling, and real-time personalization.
+These platforms collect and process information about betting frequency,
+session length, deposit and withdrawal patterns, losses, and responses
+to promotions. That information is then used to personalize the
+experience through bonuses, cash-out prompts, targeted offers, and
+adaptive interfaces that influence how and how often users bet. Sports
+betting platforms should be understood not just as entertainment
+businesses, but as data-intensive systems that actively monitor and
+respond to user behavior.</p>
+<p>The ethical problem arises when that monitoring capacity meets a
+profit motive. A platform may be able to identify patterns consistent
+with loss-chasing, compulsive play, or financial distress. If those
+signals are used to offer a cooling-off period or a deposit limit, the
+data system is working in the user's interest. If they are used to send
+a targeted bonus or a cash-out prompt at a moment of emotional
+vulnerability, the same system becomes a harm amplifier. That
+distinction between the protective and exploitative uses of the same
+behavioral data is the core ethical issue this paper addresses.</p>
+<p><strong>Key Decisions and Stakeholders</strong></p>
+<p>The ethical concerns in AI-driven sports betting arise from a series
+of design and governance decisions: what data to collect, how to define
+risk, when to intervene, and who controls and evaluates these systems.
+Each decision has direct consequences for the people the platform
+interacts with.</p>
+<p>Betting companies sit at the center of this analysis. They have the
+most design power, the most data, and the strongest financial incentive
+to keep users active, which creates a structural tension, since the
+highest-spending users are often also the most at risk. Casual bettors
+are affected too, not just people with severe addiction. Personalization
+can shape how often ordinary users bet, how long their sessions run, and
+how they perceive risk, often in ways they do not fully notice.
+Vulnerable and at-risk users face the most severe consequences:
+addiction escalation, financial instability, and loss of control. They
+also have the strongest claim to protection and represent the clearest
+case of why data use in gambling carries high ethical stakes.</p>
+<p>Regulators have the formal authority to set standards and enforce
+compliance, but they frequently lack access to the behavioral data and
+model logic that platforms control. That informational asymmetry is
+itself an ethical problem, since meaningful oversight depends on being
+able to see what is happening inside these systems. Athletes, teams, and
+sports leagues are stakeholders whose performance data fuels the betting
+ecosystem, often with limited control over how that data is
+commercialized or the consequences that follow. And beyond the platform
+itself, families, clinicians, public health systems, and broader society
+absorb the downstream costs of harmful gambling, costs they did not
+choose and have little power to prevent.</p>
+<p><strong>Ethical Matrix</strong></p>
+<p>The following matrix evaluates how AI-driven sports betting affects
+key stakeholders across three principles: well-being, autonomy, and
+justice.</p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 26%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Stakeholder</strong></th>
+<th><strong>Well-Being</strong></th>
+<th><strong>Autonomy</strong></th>
+<th><strong>Justice</strong></th>
+</tr>
+<tr class="odd">
+<th>Betting Platforms</th>
+<th>Revenue and growth; reputational benefit from reduced scandal.</th>
+<th>Freedom to design products and personalize with limited outside
+interference.</th>
+<th>Tension arises when profit depends on practices that harm users
+while platforms self-define 'responsible gambling.'</th>
+</tr>
+<tr class="header">
+<th>Casual Bettors</th>
+<th>Entertainment and convenience; risks include overspending and
+gradual drift toward harmful behavior.</th>
+<th>Undermined when nudges, dynamic offers, or frictionless deposits
+shape behavior users don't fully recognize.</th>
+<th>Deserve protection from manipulative design and opaque algorithms
+even if not clinically addicted.</th>
+</tr>
+<tr class="odd">
+<th>Vulnerable / At-Risk Users</th>
+<th>Strongest concern - addiction escalation, financial loss,
+mental-health harm, and compulsive patterns.</th>
+<th>Meaningfully threatened when systems identify risky moments and
+respond with offers that capitalize on vulnerability.</th>
+<th>Strong claim to special protection; unjust if platforms detect risky
+patterns but use them to increase retention.</th>
+</tr>
+<tr class="header">
+<th>Athletes, Teams &amp; Leagues</th>
+<th>Revenue upside; harms include bettor harassment and reputational
+damage tied to gambling outcomes.</th>
+<th>Limited say over how performance data are sold, modeled, and used in
+betting markets.</th>
+<th>Questions of data ownership and whether monetization benefits are
+distributed fairly.</th>
+</tr>
+<tr class="odd">
+<th>Regulators</th>
+<th>Public welfare and consumer protection; undermined when platforms
+control the evidence base.</th>
+<th>Formal authority exists but is limited when companies own the data
+and define their own risk thresholds.</th>
+<th>Injustice when regulators operate at an informational disadvantage
+to those they oversee.</th>
+</tr>
+<tr class="header">
+<th>Families, Clinicians &amp; Public Health</th>
+<th>Reduced burden when harm is caught early; increased treatment, debt,
+and crisis response when it is not.</th>
+<th>Little power to intervene before harm becomes severe.</th>
+<th>Inequitable that external parties absorb damage without any
+corresponding decision-making power.</th>
+</tr>
+<tr class="odd">
+<th>Broader Society</th>
+<th>Economic activity and entertainment offset by addiction prevalence,
+debt, and normalization of constant wagering.</th>
+<th>Collective autonomy narrowed when sports culture is saturated with
+betting prompts and odds talk.</th>
+<th>Unequal harm by class and age; benefits concentrated, harms
+distributed widely.</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>Data Access, Selection, Curation, and Privacy</strong></p>
+<p>Online betting platforms operate through continuous behavioral
+monitoring. They collect betting frequency, session length, deposits and
+withdrawals, loss patterns, account balances, responses to promotions,
+and time-of-day activity. This creates a detailed behavioral profile of
+each user, one that can be used to predict future behavior and shape the
+environment accordingly. The resulting power imbalance is immediate:
+platforms control collection, storage, and interpretation of the most
+valuable information in the system, while regulators, researchers, and
+users generally do not have comparable access.</p>
+<p>Data selection is never neutral. A platform must decide which
+behavioral signals count as meaningful, and those choices reflect
+priorities. Variables that correlate with spending and retention are
+commercially useful. Variables that correlate with distress, such as
+repeated losses, long sessions, late-night deposits, and rapid account
+depletion. These signals are useful for harm detection only if the
+platform chooses to treat them that way. Problem gambling is not
+observed directly; it must be inferred through proxies and thresholds.
+The assumptions embedded in those thresholds determine who gets flagged,
+who gets ignored, and what the company treats as a reason to act.</p>
+<p>Curation introduces further complexity. Raw behavioral data is often
+ambiguous. A long session might reflect normal entertainment for one
+user and loss-chasing for another. Frequent deposits might indicate high
+engagement or escalating financial distress. Converting these signals
+into a predictive model requires judgment about thresholds, categories,
+and forecasting windows. That is where the appearance of technical rigor
+can mask deeper ethical choices. A harm-detection model trained on weak
+or commercially convenient indicators can look sophisticated while
+producing ethically flawed conclusions.</p>
+<p>Privacy concerns in this context go beyond data security. Gambling
+data are unusually sensitive because they reveal patterns of
+impulsivity, stress, financial behavior, and decision-making in
+high-risk conditions. Many users may understand generally that apps
+collect data, but they are unlikely to realize that behavioral patterns
+can be turned into interventions - that the timing of a bonus or the
+appearance of a cash-out prompt may reflect a model built from their
+prior activity. The issue is not just what platforms know but what they
+can do with that knowledge invisibly.</p>
+<p>Secondary use is one of the most consequential ethical tensions in
+this space. The same data infrastructure built to support responsible
+gambling tools can also support highly efficient targeting. A platform
+can justify extensive data collection as a safety measure while using
+that data to identify responsive users and increase engagement during
+moments when restraint is weakened. Privacy in this context cannot be
+separated from power.</p>
+<p>Several real-world obstacles complicate ethical data governance in
+this sector. Proprietary algorithms are protected as trade secrets,
+making independent review difficult even when regulators have authority
+to request it. Industry definitions of harm vary widely. There is no
+standard threshold for risky session length or concerning loss patterns,
+allowing platforms to set low bars and still claim compliance. Data
+access agreements between regulators and platforms are often negotiated
+rather than mandated, creating inconsistency across jurisdictions. The
+pace of product iteration in mobile apps often outstrips regulatory
+review, so new personalization features may be deployed before any
+oversight framework exists to evaluate them.</p>
+<p><strong>Governance Structures</strong></p>
+<p>Governing AI-driven sports betting requires more than business
+discretion. The same models that can be described as responsible
+gambling tools can also serve retention and engagement. If governance is
+weak, platforms can claim to be protective while still prioritizing
+profit, and the public has no reliable way to verify otherwise.</p>
+<p>Company self-regulation is not sufficient. Betting companies have
+strong financial incentives to keep users active, and the users most
+likely to be harmed are often the highest spenders. That structural
+conflict of interest means internal policies and voluntary initiatives
+cannot be the primary mechanism of accountability. Independent external
+audits are necessary and must go beyond technical accuracy. They should
+examine what variables are used, what outcomes are optimized, whether
+vulnerable users are flagged early enough, and whether interventions
+actually reduce harm rather than just appearing to care.</p>
+<p>Transparency is a governance requirement, not a design preference.
+Users should know what behavioral data are collected, when that data
+personalizes their experience, and what automated systems influence the
+offers and prompts they see. Transparency also enables accountability: a
+system that cannot be explained to regulators or users is harder to
+challenge or improve.</p>
+<p>Standardization is a critical gap. Different platforms use different
+variables, thresholds, and evaluation methods to define and measure
+harm. This inconsistency makes it difficult to compare approaches or
+hold companies to common standards. Governance frameworks should
+establish clearer expectations about which indicators must be monitored,
+how platforms report intervention outcomes, and what evidence is needed
+to show that protective tools actually work.</p>
+<p>Fairness testing should focus on harm distribution, not just
+technical bias in the abstract. A responsible governance framework would
+require testing whether high-risk users receive more aggressive
+personalization instead of protective responses, whether certain
+demographic groups are consistently missed by harm-detection tools, and
+whether interventions reach those most likely to need them. Relevant
+methodologies include disparate impact analysis, counterfactual fairness
+testing, and structured auditing frameworks such as SMACTR, which
+evaluates AI systems across scoping, mapping, artifact collection,
+testing, and reflection stages.</p>
+<p>Human oversight should be preserved. Automated systems can process
+data at scale but should not be the final authority in a domain
+involving addiction, financial harm, and vulnerable behavior. Human
+judgment is necessary when interpreting flagged patterns, deciding on
+interventions, and overriding automated conclusions that may be
+technically defensible but ethically insufficient.</p>
+<p>Finally, scalability must be evaluated ethically, not just
+operationally. A system that scales personalized nudges and retention
+strategies without proportionately scaling safeguards is not an ethical
+success because it operates at scale. Growth in personalization must be
+matched by growth in monitoring, transparency, and public
+accountability.</p>
+<p><strong>Proposed Solution and Recommendations</strong></p>
+<p>The goal is not to remove data science from sports betting.
+Predictive systems and personalization are not inherently unethical. The
+problem is what they are designed to optimize and whether governance
+structures constrain harmful uses while requiring protective ones. A
+responsible system would treat harm prevention as a core design
+requirement, not a secondary public relations feature.</p>
+<p>Six recommendations follow from this analysis. First, personalization
+and harm-detection systems should be subject to independent auditing
+that examines not simply technical accuracy but ethical design: what
+data are used, what outcomes are optimized, how risk is defined, and
+whether interventions actually reduce harm. Second, platforms should be
+required to implement friction-based interventions like cooldown
+prompts, deposit pauses, session alerts when behavioral patterns suggest
+escalating risk. The point is not to eliminate user choice but to
+interrupt the fast, impulsive cycles that make harmful behavior more
+likely. Third, personalization should be restricted for users showing
+signs of vulnerability. A platform should not be timing bonuses or
+tailoring offers based on behavioral signals that already suggest
+loss-chasing or weakened control. The system should shift in the
+opposite direction, reducing engagement prompts and increasing
+safeguards.</p>
+<p>Fourth, platforms should provide meaningful transparency into how
+behavioral data is used and when automated systems influence the user
+experience. Fifth, governance structures should establish standardized
+indicators and reporting requirements for harm detection, so that claims
+of responsible gambling can be evaluated against measurable standards
+rather than self-assessed. Sixth, regulators should have access to
+summaries of harm indicators, flagging rates, intervention types, and
+outcome data, enough to evaluate compliance without requiring full
+access to raw user records.</p>
+<p>Together, these recommendations are designed to rebalance power.
+Right now, platforms hold the most behavioral data, the most design
+control, and the strongest financial incentive to keep users engaged. A
+better system would not eliminate innovation - it would require that
+innovation operate within firmer ethical limits. If companies are
+allowed to use systems powerful enough to predict vulnerability, they
+should also be required to use those systems in ways that reduce harm
+rather than monetize it.</p>
+<p><strong>Conclusion</strong></p>
+<p>AI-driven sports betting platforms present ethical concerns that go
+beyond ordinary questions of entertainment or consumer preference. The
+core issue is that these platforms operate in a high-risk environment
+where behavioral data can be used to monitor, predict, and shape user
+behavior in real time. The same systems that can detect distress,
+repeated losses, and compulsive patterns can also be used to increase
+engagement and personalize the experience in ways that put vulnerable
+users at greater risk.</p>
+<p>The ethical tension arises from the relationship between data power
+and the distribution of harm. Platforms control the design of the
+system, the collection of behavioral data, and the deployment of
+interventions. But the most serious harms fall on vulnerable gamblers,
+their families, public health systems, and a broader social environment
+shaped by constant access to betting. The problem is not caused by a
+lack of information. In many cases, platforms already have enough
+behavioral data to identify harmful patterns. The deeper question is
+what they choose to do with it.</p>
+<p>Stronger governance is necessary: independent audits, clearer
+standards, meaningful transparency, fairness testing, and human
+monitoring. These are not barriers to innovation. They are the
+conditions under which data-driven systems can be trusted to serve users
+rather than exploit them. The most important question in this space is
+not whether platforms can predict behavior. It is whether they are
+willing, and required, to use that predictive power in ways that
+genuinely protect people.</p>
+<p><strong>References</strong></p>
+<p>Auer, M., &amp; Griffiths, M. D. (2023). Using artificial
+intelligence algorithms to predict self-reported problem gambling with
+account-based player data in an online casino setting. Journal of
+Gambling Studies, 39, 1273–1294.</p>
+<p>Binesh, F., &amp; Ghaharian, K. (2025). Identifying risks and ethical
+matters of AI in gambling: A scoping review. International Journal of
+Hospitality &amp; Tourism Administration. Advance online
+publication.</p>
+<p>Grubbs, J. B., &amp; Kraus, S. W. (2023). Sports wagering in the
+context of addictive disorders: Results from a census-matched U.S.
+sample. Cogent Mental Health, 2(1), 2231497.</p>
+<p>Marionneau, V., Ristolainen, K., &amp; Roukka, T. (2025). Duty of
+care, data science, and gambling harm: A scoping review of risk
+assessment models. Computers in Human Behavior Reports, 18, 100644.</p>
+<p>Mihai, F., Aleca, O. E., &amp; Iordache, D.-M. (2025). AI
+personalization and its influence on online gamblers' behavior.
+Behavioral Sciences, 15(6), 779.</p>
+<p>Najjar, M.-C. (2023). Legal and ethical issues arising from the
+application of data analytics and artificial intelligence to traditional
+sports. Albany Law Journal of Science &amp; Technology, 33(1),
+51–114.</p>
+</body>
+</html>

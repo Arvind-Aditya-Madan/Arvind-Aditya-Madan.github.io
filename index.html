@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arvind Madan | Data Science Portfolio</title>
+  <meta name="description" content="Portfolio for Arvind Madan: sports analytics, predictive modeling, data visualization, and automotive predictive marketing." />
+  <style>
+    :root {
+      --navy: #0b1f3a;
+      --navy-2: #13294b;
+      --carolina: #4b9cd3;
+      --carolina-dark: #2f80b7;
+      --ink: #142033;
+      --muted: #5f6f85;
+      --line: #dbe7f3;
+      --soft: #f5f9fd;
+      --white: #ffffff;
+      --shadow: 0 18px 45px rgba(11, 31, 58, 0.10);
+      --shadow-strong: 0 24px 70px rgba(11, 31, 58, 0.16);
+      --radius: 22px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(75, 156, 211, 0.16), transparent 34rem),
+        radial-gradient(circle at 85% 20%, rgba(19, 41, 75, 0.08), transparent 30rem),
+        linear-gradient(180deg, #ffffff 0%, #f7fbff 48%, #ffffff 100%);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.84);
+      border-bottom: 1px solid rgba(219, 231, 243, 0.78);
+    }
+
+    .nav {
+      width: min(var(--max), calc(100% - 36px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 0;
+      gap: 22px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 850; letter-spacing: -0.03em; color: var(--navy); }
+    .brand-mark {
+      width: 36px; height: 36px; border-radius: 12px;
+      display: grid; place-items: center;
+      color: white; background: linear-gradient(135deg, var(--navy), var(--carolina));
+      box-shadow: 0 12px 24px rgba(75, 156, 211, .22);
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 18px; font-size: .94rem; font-weight: 700; color: var(--muted); }
+    .nav-links a:hover { color: var(--navy); }
+
+    main { width: min(var(--max), calc(100% - 36px)); margin: 0 auto; }
+
+    .hero {
+      min-height: 82vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(300px, .94fr);
+      align-items: center;
+      gap: clamp(28px, 6vw, 74px);
+      padding: 78px 0 58px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      color: var(--carolina-dark);
+      font-size: .82rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+    }
+    .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--carolina); box-shadow: 0 0 0 5px rgba(75,156,211,.16); }
+
+    h1 {
+      margin: 18px 0 0;
+      font-size: clamp(2.6rem, 7vw, 5.6rem);
+      line-height: .95;
+      letter-spacing: -0.075em;
+      color: var(--navy);
+    }
+    h1 span { color: var(--carolina-dark); }
+    .hero-text { max-width: 720px; margin: 25px 0 0; font-size: clamp(1.02rem, 2vw, 1.22rem); color: #3e5068; }
+    .hero-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+    .pill { border:1px solid var(--line); background:white; color:var(--muted); border-radius:999px; padding:8px 12px; font-size:.88rem; font-weight:750; }
+
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 11px 16px; border-radius: 999px;
+      border: 1px solid transparent; font-weight: 850; font-size: .92rem;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+      cursor: pointer;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { background: var(--navy); color: white; box-shadow: 0 14px 30px rgba(11,31,58,.22); }
+    .button-secondary { background: white; color: var(--navy); border-color: var(--line); box-shadow: 0 10px 25px rgba(11,31,58,.08); }
+    .button-secondary:hover { border-color: rgba(75,156,211,.55); box-shadow: 0 16px 34px rgba(75,156,211,.16); }
+    .button-muted { background: var(--soft); color: var(--muted); border-color: var(--line); }
+
+    .hero-card {
+      position: relative;
+      border-radius: 34px;
+      overflow: hidden;
+      background: white;
+      border: 1px solid rgba(219,231,243,.9);
+      box-shadow: var(--shadow-strong);
+    }
+    .hero-photo { aspect-ratio: 1 / 1; object-fit: cover; width:100%; }
+    .hero-card-overlay {
+      position: absolute; left: 18px; right: 18px; bottom: 18px;
+      border: 1px solid rgba(255,255,255,.65);
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(15px);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 18px 38px rgba(11,31,58,.16);
+    }
+    .hero-card-overlay strong { display:block; color: var(--navy); font-size:1.05rem; letter-spacing:-.03em; }
+    .hero-card-overlay span { display:block; color: var(--muted); font-size:.9rem; margin-top:2px; }
+
+    section { padding: 66px 0; }
+    .section-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:28px; margin-bottom:28px; }
+    .section-heading h2 { margin: 0; color: var(--navy); font-size: clamp(2rem, 4.5vw, 3.5rem); line-height:1; letter-spacing:-.06em; }
+    .section-heading p { max-width: 620px; margin: 0; color: var(--muted); font-size:1rem; }
+
+    .highlights { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:14px; margin-top: 32px; }
+    .highlight-box { background:white; border:1px solid var(--line); border-radius:20px; padding:18px; box-shadow:0 10px 26px rgba(11,31,58,.06); }
+    .highlight-box strong { display:block; color:var(--navy); font-size:1.45rem; letter-spacing:-.04em; }
+    .highlight-box span { color:var(--muted); font-weight:650; font-size:.92rem; }
+
+    .projects-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px; }
+    .project-card {
+      background: rgba(255,255,255,.82); border:1px solid var(--line); border-radius: var(--radius); padding:26px;
+      box-shadow:0 12px 34px rgba(11,31,58,.07); display:flex; flex-direction:column; gap:18px;
+    }
+    .project-card.featured { grid-column: 1 / -1; display:grid; grid-template-columns: minmax(0,1.18fr) minmax(280px,.82fr); gap:22px; align-items:stretch; }
+    .project-kicker { color:var(--carolina-dark); text-transform:uppercase; letter-spacing:.11em; font-size:.78rem; font-weight:900; margin-bottom:10px; }
+    .project-card h3 { margin:0; color:var(--navy); font-size:1.48rem; letter-spacing:-.045em; line-height:1.1; }
+    .project-card p { margin:10px 0 0; color:#3f5068; }
+    .project-card ul { margin:14px 0 0; padding-left:20px; color:#485b74; }
+    .project-card li + li { margin-top:6px; }
+    .tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .tag { display:inline-flex; padding:6px 10px; background:var(--soft); border:1px solid var(--line); border-radius:999px; color:var(--navy-2); font-size:.78rem; font-weight:800; }
+    .project-links { display:flex; flex-wrap:wrap; gap:10px; margin-top:auto; padding-top:8px; }
+    .stat-panel { background:linear-gradient(145deg,var(--navy),#123b67); color:white; border-radius:22px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; min-height:100%; }
+    .stat-panel h4 { margin:0; color:#bfe4ff; text-transform:uppercase; letter-spacing:.1em; font-size:.78rem; }
+    .stat-panel .big-stat { margin-top:10px; font-size:clamp(2.8rem,6vw,4.8rem); line-height:.9; font-weight:900; letter-spacing:-.08em; }
+    .stat-panel p { color:#dbeeff; margin:12px 0 0; }
+    .mini-list { margin-top:22px; display:grid; gap:10px; }
+    .mini-list div { display:flex; justify-content:space-between; gap:16px; border-top:1px solid rgba(255,255,255,.16); padding-top:10px; color:#eaf6ff; font-weight:750; }
+    .mini-list span { color:#bfe4ff; font-weight:700; }
+
+    .experience-grid { display:grid; grid-template-columns: minmax(0, 1.1fr) minmax(260px,.9fr); gap:18px; }
+    .panel { background:white; border:1px solid var(--line); border-radius:var(--radius); padding:26px; box-shadow:0 12px 34px rgba(11,31,58,.07); }
+    .panel h3 { margin:0; color:var(--navy); font-size:1.35rem; letter-spacing:-.04em; }
+    .panel .sub { margin-top:4px; color:var(--carolina-dark); font-weight:900; }
+    .panel p { color:#41536b; margin:14px 0 0; }
+    .panel ul { margin:14px 0 0; padding-left:20px; color:#4b5d74; }
+
+    .skills-wrap { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:14px; }
+    .skill-card { background:white; border:1px solid var(--line); border-radius:20px; padding:20px; box-shadow:0 8px 24px rgba(11,31,58,.06); }
+    .skill-card h3 { margin:0 0 8px; color:var(--navy); font-size:1.05rem; }
+    .skill-card p { margin:0; color:var(--muted); font-size:.94rem; }
+
+    .contact-box {
+      background: linear-gradient(135deg, var(--navy), #123b67);
+      border-radius: 30px; color:white; padding:34px;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+      box-shadow: var(--shadow-strong);
+    }
+    .contact-box h2 { margin:0; color:white; font-size:clamp(2rem,4vw,3.2rem); letter-spacing:-.06em; line-height:1; }
+    .contact-box p { color:#dceeff; max-width:620px; margin:12px 0 0; }
+    .contact-actions { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; }
+    .contact-actions .button { background:white; color:var(--navy); }
+    footer { width:min(var(--max), calc(100% - 36px)); margin:0 auto; padding:28px 0 44px; color:var(--muted); }
+    .footer-inner { border-top:1px solid var(--line); padding-top:20px; display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; font-size:.9rem; }
+
+    @media (max-width: 920px) {
+      .hero, .project-card.featured, .experience-grid { grid-template-columns:1fr; }
+      .hero { min-height:auto; padding-top:50px; }
+      .highlights, .skills-wrap { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .projects-grid { grid-template-columns:1fr; }
+      .section-heading { align-items:flex-start; flex-direction:column; }
+      .contact-box { align-items:flex-start; flex-direction:column; }
+      .contact-actions { justify-content:flex-start; }
+    }
+    @media (max-width: 640px) {
+      .nav { align-items:flex-start; }
+      .nav-links { display:none; }
+      main, .nav, footer { width:min(100% - 24px, var(--max)); }
+      .highlights, .skills-wrap { grid-template-columns:1fr; }
+      .hero-card-overlay { position:static; margin:0; border-radius:0; border-left:0; border-right:0; border-bottom:0; }
+      .project-card, .panel, .contact-box { padding:22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#top" class="brand" aria-label="Arvind Madan home">
+        <span class="brand-mark">AM</span>
+        <span>Arvind Madan</span>
+      </a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">Sports analytics · Predictive modeling · Data products</div>
+        <h1 id="hero-title">Building models for decisions that happen in the real world.</h1>
+        <p class="hero-text">
+          I’m Arvind Madan, a data scientist building predictive models, sports analytics tools, and decision-support systems across baseball, basketball, and automotive marketing.
+        </p>
+        <div class="hero-meta">
+          <span class="pill">Master of Applied Data Science, UNC Chapel Hill</span>
+          <span class="pill">Junior Data Scientist at ClicMotion</span>
+          <span class="pill">Python · SQL · Databricks · Streamlit</span>
+        </div>
+        <div class="cta-row">
+          <a class="button button-primary" href="#projects">View projects</a>
+          <a class="button button-secondary" href="mailto:arvind@themadans.net">Email</a>
+          <a class="button button-secondary" href="https://www.linkedin.com/in/arvind-aditya-madan-08271174/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="button button-secondary" href="https://github.com/mxngojuice" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+
+        <div class="highlights" aria-label="Portfolio highlights">
+          <div class="highlight-box"><strong>5</strong><span>featured projects</span></div>
+          <div class="highlight-box"><strong>6th</strong><span>Triangle Sports Analytics Competition</span></div>
+          <div class="highlight-box"><strong>2024</strong><span>started predictive marketing work</span></div>
+          <div class="highlight-box"><strong>2026</strong><span>MADS graduate</span></div>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="Arvind Madan photo">
+        <img class="hero-photo" src="assets/arvind-headshot.jpg" alt="Portrait of Arvind Madan" />
+        <div class="hero-card-overlay">
+          <strong>Sports analytics + applied data science</strong>
+          <span>Forecasting, modeling, visualization, reporting, and stakeholder-facing tools.</span>
+        </div>
+      </aside>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <div class="section-heading">
+        <h2 id="projects-title">Featured Projects</h2>
+        <p>Sports-focused projects across forecasting, machine learning, visualization, spread prediction, and responsible AI. For private repos, I link to reports instead.</p>
+      </div>
+
+      <div class="projects-grid">
+        <article class="project-card featured">
+          <div>
+            <div class="project-kicker">UNC Athletics · Forecasting · Capstone</div>
+            <h3>UNC Baseball Attendance Prediction</h3>
+            <p>
+              End-to-end attendance forecasting framework and Streamlit decision-support app for UNC baseball home games. The project combined historical attendance, schedule context, opponent strength, weather, academic calendar timing, Google Trends, promotions, and team performance data to help support staffing, concessions, marketing, and game-day operations.
+            </p>
+            <ul>
+              <li>Built with chronological validation, weighted rolling cross-validation, feature tiers, Optuna tuning, and backward feature elimination.</li>
+              <li>Supported both preseason forecasts and two-day-ahead update forecasts for operational planning.</li>
+              <li>My work focused on data cleaning, feature engineering, master dataset integration, weighted CV, preseason workflow adaptation, and weather/attendance features.</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">scikit-learn</span><span class="tag">Elastic Net</span><span class="tag">Optuna</span><span class="tag">SHAP</span><span class="tag">Google Trends</span>
+            </div>
+            <div class="project-links">
+              <a class="button button-secondary" href="https://unc-baseball-attendance-forecasting.streamlit.app/" target="_blank" rel="noreferrer">Live app</a>
+              <a class="button button-secondary" href="reports/unc-baseball-attendance-report.html">Full README report</a>
+              <a class="button button-secondary" href="https://triangle-sports.github.io/" target="_blank" rel="noreferrer">Competition site</a>
+            </div>
+          </div>
+          <div class="stat-panel">
+            <div>
+              <h4>Best two-day-ahead model</h4>
+              <div class="big-stat">9.1%</div>
+              <p>MAPE, with 88% of predictions within 500 attendees and a 48% improvement over baseline.</p>
+            </div>
+            <div class="mini-list">
+              <div><span>Preseason RMSE</span><strong>406</strong></div>
+              <div><span>Two-day RMSE</span><strong>326</strong></div>
+              <div><span>Two-day R²</span><strong>0.805</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-kicker">NBA · 3D visualization</div>
+          <h3>CourtSpace 3D</h3>
+          <p>
+            Interactive Streamlit app for exploring NBA shot patterns through a 3D half-court visualization. Users can filter by player, season, opponent, venue, shot result, and shot distance, then compare shot zones against league average.
+          </p>
+          <ul>
+            <li>Expanded advanced filters and multi-season querying.</li>
+            <li>Improved UI with player/team visuals and clearer shot context controls.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">Plotly</span><span class="tag">nba_api</span><span class="tag">Data Visualization</span>
+          </div>
+          <div class="project-links">
+            <a class="button button-secondary" href="https://courtspace3d-v4.streamlit.app/" target="_blank" rel="noreferrer">Live app</a>
+            <a class="button button-secondary" href="https://github.com/mxngojuice/CourtSpace3D-v4/tree/main" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-kicker">MLB · Machine learning</div>
+          <h3>Pitch Forecaster</h3>
+          <p>
+            Collaborative machine learning project predicting the next pitch type in an MLB plate appearance using only pre-pitch information. The project used Statcast/Baseball Savant data, game context, lagged pitch-sequence features, pitcher arsenals, batter tendencies, and multiclass classification models.
+          </p>
+          <ul>
+            <li>Compared logistic regression, random forest, neural network, and ensemble approaches.</li>
+            <li>Final ensemble reached 46% accuracy and a 0.42 macro F1 score across nine pitch classes.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Statcast</span><span class="tag">scikit-learn</span><span class="tag">TensorFlow</span><span class="tag">Optuna</span><span class="tag">Multiclass Classification</span>
+          </div>
+          <div class="project-links">
+            <a class="button button-secondary" href="reports/pitch-forecaster-final-report.pdf" target="_blank">Full report PDF</a>
+            <span class="button button-muted">Repo private</span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-kicker">ACC basketball · Spread prediction</div>
+          <h3>ACC Spread Predictor</h3>
+          <p>
+            Competition project to predict the home-away point spread for remaining ACC men’s basketball games starting February 6 using only information available before that date. I built first-half team features, tested RAW vs. DIFF feature representations, and trained rolling-season models that mimic a deployable forecasting setup.
+          </p>
+          <ul>
+            <li>Random Forest with DIFF-based features performed best, reaching mean MAE around 9.19 points.</li>
+            <li>Used Optuna tuning, AP Poll features, venue/rest effects, ACC-only performance, and split conformal prediction intervals.</li>
+            <li>Placed 6th in the Triangle Sports Analytics Competition.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">R</span><span class="tag">ncaahoopR</span><span class="tag">Random Forest</span><span class="tag">Conformal Prediction</span><span class="tag">Sports Betting</span>
+          </div>
+          <div class="project-links">
+            <a class="button button-secondary" href="reports/acc-spread-predictor-report.html">Full project summary</a>
+            <a class="button button-secondary" href="https://triangle-sports.github.io/" target="_blank" rel="noreferrer">Competition site</a>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-kicker">Data ethics · Sports gambling</div>
+          <h3>When Data Bets Against You</h3>
+          <p>
+            Research paper on the ethics of AI-driven sports betting platforms. The paper examines how behavioral data, personalization, promotions, and real-time targeting can either support harm prevention or amplify risk when engagement is prioritized over user well-being.
+          </p>
+          <ul>
+            <li>Focused on autonomy, privacy, consumer protection, accountability, and governance.</li>
+            <li>Argued for transparency, independent audits, protective interventions, and stricter limits on exploitative personalization.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Data Ethics</span><span class="tag">Responsible AI</span><span class="tag">Sports Gambling</span><span class="tag">Governance</span>
+          </div>
+          <div class="project-links">
+            <a class="button button-secondary" href="reports/when-data-bets-against-you.html">Read paper</a>
+            <a class="button button-muted" href="reports/when-data-bets-against-you.docx">DOCX</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" aria-labelledby="experience-title">
+      <div class="section-heading">
+        <h2 id="experience-title">Experience</h2>
+        <p>Applied data work outside of class: predictive marketing, customer analytics, model development, matching, and reporting.</p>
+      </div>
+      <div class="experience-grid">
+        <div class="panel">
+          <h3>Junior Data Scientist · ClicMotion</h3>
+          <div class="sub">June 2024 – Present · Predictive marketing for automotive sales and service</div>
+          <p>
+            I work on predictive marketing and customer analytics for automotive dealerships, with a focus on cleaning, matching, modeling, and reporting across dealership and household datasets.
+          </p>
+          <ul>
+            <li>Built and supported models/data workflows using repair orders, sales records, dealership customer profiles, campaign engagement data, and household enrichment data.</li>
+            <li>Worked on service propensity use cases for tires, brakes, and batteries, as well as communication preference and customer matching analysis.</li>
+            <li>Used Databricks, SQL, Python, and Excel extensively for data cleaning, feature creation, model development, charts, and reporting.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Education</h3>
+          <div class="sub">Master of Applied Data Science</div>
+          <p>University of North Carolina at Chapel Hill · May 2026</p>
+          <div class="tags" style="margin-top:18px">
+            <span class="tag">Machine Learning</span><span class="tag">Sports Analytics</span><span class="tag">Forecasting</span><span class="tag">Visualization</span><span class="tag">Applied Data Science</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <div class="section-heading">
+        <h2 id="skills-title">Skills</h2>
+        <p>The common thread: build the dataset, keep the validation honest, and turn the result into something people can use.</p>
+      </div>
+      <div class="skills-wrap">
+        <div class="skill-card"><h3>Languages & tools</h3><p>Python, SQL, R, Databricks, Excel, Git, GitHub, Jupyter Notebook.</p></div>
+        <div class="skill-card"><h3>Modeling</h3><p>Regression, random forests, neural networks, forecasting, cross-validation, Optuna, conformal intervals.</p></div>
+        <div class="skill-card"><h3>Data products</h3><p>Streamlit, Plotly, dashboards, stakeholder-facing apps, technical reports, and documentation.</p></div>
+        <div class="skill-card"><h3>Data work</h3><p>Cleaning, matching, feature engineering, scraping, pipeline design, reporting, and model evaluation.</p></div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact" aria-labelledby="contact-title">
+      <div class="contact-box">
+        <div>
+          <h2 id="contact-title">Let’s connect.</h2>
+          <p>I’m interested in sports analytics, predictive modeling, data science roles, and tools that make complex data easier to use.</p>
+        </div>
+        <div class="contact-actions">
+          <a class="button" href="mailto:arvind@themadans.net">Email</a>
+          <a class="button" href="https://www.linkedin.com/in/arvind-aditya-madan-08271174/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="button" href="https://github.com/mxngojuice" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 Arvind Madan</span>
+      <span>Sports analytics · Predictive modeling · Data visualization</span>
+    </div>
+  </footer>
+</body>
+</html>

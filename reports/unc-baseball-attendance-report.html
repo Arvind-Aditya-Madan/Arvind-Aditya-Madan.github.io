@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>UNC Baseball Attendance Prediction</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="report-style.css" />
+</head>
+<body>
+<a class="back" href="../index.html">← Back to portfolio</a>
+<header id="title-block-header">
+<h1 class="title">UNC Baseball Attendance Prediction</h1>
+</header>
+<h1
+id="data-992-spring-2026---unc-athletics-predicting-attendance-at-carolina-game-days">DATA
+992 SPRING 2026 - UNC Athletics: Predicting Attendance at Carolina Game
+Days</h1>
+<p><strong>A machine learning framework for forecasting game-day
+attendance at UNC baseball home games to support smarter staffing,
+marketing, and fan experience planning.</strong></p>
+<hr />
+<h1 id="project-overview">Project Overview</h1>
+<h2 id="problem-statement">Problem Statement</h2>
+<p>UNC Athletics hosts home events across 28 teams and supports over 800
+student-athletes. Game-day attendance is crucial to operational
+planning, staffing, marketing effectiveness, and overall fan experience;
+however, attendance varies widely by sport, venue, opponent, scheduling,
+and other contextual factors, making reliable advance planning
+difficult. Current attendance planning often relies on historical
+averages and scheduling heuristics, which fail to fully capture how
+multiple drivers interact at the game level, resulting in inefficient
+resource allocation and suboptimal staffing decisions.</p>
+<p>This project develops a data-driven framework that integrates
+historical and contextual data to forecast game-day attendance and
+identify key drivers of variation. The project combines interpretable
+predictive models with interactive dashboards that translate results
+into actionable guidance for marketing, operations, and event
+management. Stakeholders, including UNC Athletics leadership, marketing
+and operations teams, student-athletes, and fans, benefit from improved
+attendance forecasting, more efficient resource allocation, and enhanced
+Carolina game-day experiences. Ultimately, this work helps transition
+attendance planning from reactive assessment to proactive, data-informed
+decision-making.</p>
+<p><strong>Developed for:</strong> UNC Athletics <br>
+<strong>Stakeholder Contact:</strong> Andrea Johnston <br>
+<strong>Course:</strong> DATA 992 - MADS Capstone <br>
+<strong>Institution:</strong> University of North Carolina School of
+Data Science and Society <br> <strong>Team:</strong> Adam Cooke, Arvind
+Madan, Daniel Fulk <br></p>
+<hr />
+<h2 id="project-scope-objectives">Project Scope &amp; Objectives</h2>
+<p>The primary goal of this project is to develop a data-driven
+framework for forecasting attendance at UNC baseball home games and
+translating those forecasts into actionable operational insights. The
+project focuses on event-level prediction and decision support to
+improve planning efficiency, resource allocation, and fan
+experience.</p>
+<p>Specifically, the project aims to:</p>
+<ol type="1">
+<li><strong>Identify key drivers of attendance for UNC baseball home
+games:</strong> Conduct exploratory data analysis and feature
+engineering to quantify how scheduling, opponent characteristics,
+weather conditions, academic calendar timing, and other contextual
+factors influence attendance variability.</li>
+<li><strong>Build predictive models to forecast game-day attendance at
+the event level:</strong> Develop, compare, and validate multiple
+predictive modeling approaches ranging from baseline statistical models
+to more flexible machine learning methods. Model performance is
+evaluated using out-of-sample validation to ensure reliability for
+real-world forecasting.</li>
+<li><strong>Create interpretable dashboards that surface projections and
+key attendance drivers:</strong> Design interactive visual tools that
+communicate attendance forecasts, model uncertainty, and influential
+factors in a clear and accessible way for non-technical stakeholders.
+Dashboards support scenario exploration and operational planning.</li>
+<li><strong>Deliver actionable insights to support staffing, promotions,
+and operations planning:</strong> Translate modeling results into
+practical recommendations that help UNC Athletics proactively allocate
+resources, target marketing efforts, and optimize the overall game-day
+experience.</li>
+</ol>
+<p>The scope of the project is intentionally focused on UNC baseball
+home games in order to develop and validate a robust forecasting
+framework. However, the methodology is designed to be scalable and
+transferable to other sports, venues, or institutions in future
+phases.</p>
+<hr />
+<h2 id="project-outputs">Project Outputs</h2>
+<p>The project produced a set of technical outputs and decision-support
+tools that allow stakeholders to understand, interpret, and apply
+attendance forecasts.</p>
+<ul>
+<li><p><strong>Attendance forecasting models:</strong> A set of
+validated predictive models capable of generating event-level attendance
+projections using historical and contextual data across multiple
+forecasting horizons.</p></li>
+<li><p><strong>Interactive Streamlit application:</strong> A user-facing
+tool that allows stakeholders to explore attendance forecasts, and
+interact with model outputs in an accessible format. <a
+href="https://unc-baseball-attendance-forecasting.streamlit.app/">Visit
+App</a></p></li>
+<li><p><strong>Executive presentation and app tutorial:</strong> A
+concise presentation of the project’s methodology, findings, model
+performance, and operational recommendations, along with guidance for
+using the Streamlit application.</p></li>
+<li><p><strong>Reproducible dataset and documented codebase:</strong> A
+clean, structured modeling dataset along with documented code to support
+transparency, reproducibility, and future extension of the forecasting
+framework.</p></li>
+<li><p><strong>Generalization analysis:</strong> An evaluation of how
+the modeling framework transfers to other sports and settings, including
+additional applications beyond UNC baseball.</p></li>
+</ul>
+<hr />
+<h2 id="team-roles-responsibilities">Team Roles / Responsibilities</h2>
+<p>The team worked collaboratively throughout the project, while each
+member maintained primary areas of responsibility that supported
+efficient execution and clear ownership of major components.</p>
+<ul>
+<li><p><strong>Adam Cooke:</strong> <em>Data Acquisition, Project
+Infrastructure, and Stakeholder Coordination</em> - Led development of
+the GoHeels.com scraper that served as the backbone of the game-level
+dataset, helped establish the modeling pipeline, and created the five
+feature tiers based on forecast-time data availability. He also gathered
+supporting datasets, contributed to GitHub and project organization, and
+supported team coordination and stakeholder communication throughout the
+semester.</p></li>
+<li><p><strong>Arvind Madan:</strong> <em>Data Engineering and Modeling
+Pipeline Refinement</em> - Led data cleaning, feature engineering, and
+integration of multiple project files into a unified master dataset for
+modeling. He also expanded the modeling pipeline by adding backward
+feature elimination, replacing the earlier test-set approach with
+weighted cross-validation, adapting the workflow for preseason
+forecasting, and engineering additional weather- and attendance-related
+features.</p></li>
+<li><p><strong>Daniel Fulk:</strong> <em>Performance Data Scraping,
+Streamlit Development, and Documentation</em> - Built the
+performance-data scraper for UNC and opponent game-level performance
+metrics and developed the Streamlit application used to present
+forecasts and results interactively. He also contributed to project
+documentation and continuously refined both the scraper and app as
+project needs evolved.</p></li>
+</ul>
+<p>All team members contributed to the final presentation and to broader
+project development in complementary ways.</p>
+<hr />
+<h2 id="methodology">Methodology</h2>
+<p><strong>Data Collection:</strong> We will assemble a historical,
+event-level dataset for UNC baseball home games by integrating
+attendance records, opponent information, scheduling details, academic
+calendar context, weather conditions, and relevant team performance
+metrics. Data will be sourced from official UNC Athletics records and
+supplemental public sources where appropriate. All data will be
+standardized to ensure consistency across seasons and structured at the
+individual game level to support downstream modeling.</p>
+<p><strong>Exploration &amp; Feature Engineering:</strong> Following
+data assembly, we will conduct exploratory data analysis to identify
+patterns in attendance across time, opponent quality, day-of-week
+effects, weather conditions, and seasonal context. Based on these
+findings, we will construct meaningful game-day context variables,
+including temporal indicators, performance-based metrics, and
+operationally relevant features. Feature engineering will prioritize
+interpretability and alignment with real-world decision timelines.</p>
+<p><strong>Predictive Modeling:</strong> We will begin with baseline
+modeling approaches to establish a transparent benchmark for attendance
+prediction. From there, we will evaluate more flexible modeling
+techniques to determine whether they provide meaningful improvements in
+predictive performance. Model evaluation will rely on out-of-sample
+validation strategies that reflect realistic forecasting scenarios and
+avoid information leakage.</p>
+<p><strong>Insights &amp; Delivery:</strong> Final outputs will
+translate modeling results into clear visualizations and interactive
+dashboards designed for operational use. Deliverables will highlight key
+attendance drivers, forecast scenarios, and actionable insights to
+support staffing, marketing, and game-day resource allocation decisions.
+Throughout the project, emphasis will be placed on clarity,
+reproducibility, and stakeholder usability.</p>
+<table style="width:6%;">
+<colgroup>
+<col style="width: 5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Data Collection and Feature Engineering</td>
+</tr>
+<tr class="even">
+<td>The modeling dataset was constructed by combining multiple source
+files into a unified game-level dataframe for UNC baseball. These
+sources include attendance and schedule data, academic calendar
+variables, enrollment data, Google Trends metrics, team location data,
+conference mapping files, and season-level performance data. Additional
+datasets were also assembled for transfer testing on NC State baseball
+and UNC basketball.</td>
+</tr>
+<tr class="odd">
+<td>### Data Sources</td>
+</tr>
+<tr class="even">
+<td>- <strong>UNC baseball base dataset
+(<code>unc_baseball_final</code>)</strong> Core game-level dataset for
+UNC baseball, including attendance outcomes and foundational
+schedule/context variables. <strong>Source / collection method:</strong>
+Custom web scraper built to pull game-level attendance, schedule, and
+result data from GoHeels.com (UNC Athletics official site). Output
+stored as CSV for downstream use.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>UNC baseball season performance
+(<code>uncbaseball_season_performance_0331</code>)</strong> Season- and
+team-performance data used to engineer historical and form-related
+predictors. <strong>Source / collection method:</strong> Custom
+performance scraper that takes the UNC baseball attendance scrape output
+and retrieves per-game performance statistics (runs, hits, home runs,
+strikeouts, etc.) for UNC and opponents from stats.ncaa.org game
+logs.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Academic calendar data
+(<code>academic_calendar_data</code>)</strong> Calendar-based variables
+capturing school session timing, breaks, exams, and other academic
+context relevant to attendance. <strong>Source / collection
+method:</strong> Manually compiled from UNC Registrar’s Office archives
+(registrar.unc.edu). Includes semester start/end dates, break periods,
+exam schedules, and session indicators for each academic year.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Enrollment data (<code>enrollment_data</code>)</strong>
+Enrollment-based variables used to represent changes in the campus
+population over time. <strong>Source / collection method:</strong>
+Manually compiled from UNC Registrar’s Office enrollment archives and
+institutional research reports (oira.unc.edu).</td>
+</tr>
+<tr class="even">
+<td>- <strong>Google Trends web data
+(<code>gtrends_data_web_uncbaseball</code>)</strong> Search-interest
+data used as a proxy for public attention and fan interest in UNC
+baseball. <strong>Source / collection method:</strong> Downloaded from
+Google Trends (trends.google.com) using UNC baseball-related search
+terms. Monthly web search interest values compiled into a structured
+CSV.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Google Trends YouTube data
+(<code>gtrends_data_yt_uncbaseball</code>)</strong> Video-search
+interest data used as an additional signal of fan engagement and
+attention. <strong>Source / collection method:</strong> Downloaded from
+Google Trends (trends.google.com) using the YouTube search filter for
+UNC baseball-related terms. Monthly YouTube search interest values
+compiled into a structured CSV.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Baseball team home coordinates
+(<code>team_home_coords_baseball</code>)</strong> Team location data
+used to support distance- or travel-related feature construction.
+<strong>Source / collection method:</strong> Manually compiled reference
+table of stadium coordinates for all opponents. Latitude and longitude
+values sourced from Google Maps and stadium reference pages.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Basketball team home coordinates
+(<code>team_home_coords_basketball</code>)</strong> Team location data
+used for cross-sport transfer and generalization analysis.
+<strong>Source / collection method:</strong> Manually compiled reference
+table of arena coordinates for all basketball opponents. Latitude and
+longitude values sourced from Google Maps and arena reference
+pages.</td>
+</tr>
+<tr class="even">
+<td>- <strong>ACC mapping for baseball
+(<code>acc_mapping_baseball</code>)</strong> Conference membership
+reference data used to engineer ACC and opponent-group features.
+<strong>Source / collection method:</strong> Manually compiled reference
+table mapping opponent names to conference affiliation and opponent
+groupings, based on historical ACC membership records.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>ACC team list for basketball
+(<code>acc_team_list_basketball</code>)</strong> Conference reference
+file used in basketball transfer testing and feature alignment.
+<strong>Source / collection method:</strong> Manually compiled reference
+table of ACC basketball membership, used for conference flag and
+opponent-group feature construction in the basketball transfer
+context.</td>
+</tr>
+<tr class="even">
+<td>- <strong>NC State baseball dataset
+(<code>ncstate_baseball_final</code>)</strong> Game-level dataset
+assembled for external transfer testing of the modeling pipeline.
+<strong>Source / collection method:</strong> Custom web scraper built to
+pull game-level attendance, schedule, and result data from GoPack.com
+(NC State Athletics official site). Follows the same structure as the
+UNC baseball scraper.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>UNC basketball dataset
+(<code>unc_basketball_final</code>)</strong> Game-level dataset
+assembled for cross-sport generalization analysis. <strong>Source /
+collection method:</strong> Custom web scraper built to pull game-level
+attendance, schedule, and result data from GoHeels.com for UNC men’s
+basketball. Follows the same structure as the UNC baseball scraper. ###
+Data Integration</td>
+</tr>
+<tr class="even">
+<td>After collection, all source files were cleaned, standardized, and
+merged at the game level. This process included aligning team names,
+dates, season identifiers, and opponent metadata across files, as well
+as resolving differences in formatting and temporal coverage. The
+resulting master dataset served as the foundation for feature
+engineering, tier construction, and downstream modeling.</td>
+</tr>
+<tr class="odd">
+<td>### Feature Engineering</td>
+</tr>
+<tr class="even">
+<td>Feature engineering focused on building variables that reflect the
+information available at different forecasting horizons while avoiding
+data leakage. Broadly, engineered features fell into the following
+groups:</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Schedule and game context:</strong> day of week, month,
+game number, series information, and timing-related indicators -
+<strong>Opponent characteristics:</strong> conference affiliation,
+rivalry indicators, and opponent groupings - <strong>Attendance
+history:</strong> prior attendance levels, lagged attendance measures,
+and year-over-year trends - <strong>Academic context:</strong> school
+session timing, breaks, exams, and enrollment-related variables -
+<strong>Fan interest signals:</strong> Google Trends web and YouTube
+measures - <strong>Performance features:</strong> previous-season and
+in-season team performance variables - <strong>Geographic/contextual
+features:</strong> travel- or location-related variables derived from
+team coordinate files</td>
+</tr>
+<tr class="even">
+<td>Additional details on rolling features, lag construction,
+forecast-safe preprocessing, and tier-specific variable availability are
+described in the sections below.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dataset-tiers">Dataset Tiers</h2>
+<p>Because each data source begins in a different season, we construct
+five tiered datasets from a single master dataframe rather than forcing
+all models to use only the shortest shared time window. Each tier adds
+richer contextual information while reducing the number of seasons
+available for training. This design allows us to directly evaluate the
+tradeoff between <strong>more history</strong> and <strong>more
+features</strong>, which is a central question of the project.</p>
+<p><img src="README_ASSETS/tiers_visualization.svg" /></p>
+<p>The red dashed line marks <strong>2018</strong>, the first season in
+which all seven source groups are simultaneously available. Tier 5 is
+therefore the only tier with full feature coverage, while the earlier
+tiers use fewer source groups but preserve longer historical
+windows.</p>
+<h3 id="tier-definitions">Tier Definitions</h3>
+<ul>
+<li><p><strong>Tier 1 (2000+): Schedule + attendance
+history</strong><br />
+The baseline preseason tier includes core schedule and game-context
+variables, opponent information, distance and rivalry indicators,
+school-night context, previous-season record, weather contexts, and
+historical attendance measures.</p></li>
+<li><p><strong>Tier 2 (2010+): Tier 1 + Google Trends</strong><br />
+Adds search-interest signals derived from Google Trends, including web,
+YouTube, and combined search volume measures. This tier captures public
+attention and fan-interest context.</p></li>
+<li><p><strong>Tier 3 (2014+): Tier 2 + team and opponent
+performance</strong><br />
+Adds season performance measures for both UNC and its opponent,
+including scoring, run prevention, home runs, strikeouts, win
+percentage, team strength, and differential-based matchup indicators.
+This tier introduces a fuller competitive-context view.</p></li>
+<li><p><strong>Tier 4 (2016+): Tier 3 + academic calendar detail and
+enrollment data</strong><br />
+Adds more detailed academic-context features, including semester
+activity, break periods, exam timing, and break type as well as
+enrollment headcounts. This tier is intended to capture how student
+availability and campus timing shape turnout.</p></li>
+<li><p><strong>Tier 5 (2019+): Tier 4 + promotions</strong><br />
+Adds promotional variables, including promotion count and promotion-type
+indicators such as giveaways, fireworks, kids events, bark events,
+discounts, theme nights, trivia, and other promotions. This is the
+richest tier, but also the smallest historically.</p></li>
+</ul>
+<h3 id="tiering-logic">Tiering Logic</h3>
+<p>The tier structure is used in both forecasting settings so that model
+performance can be compared under consistent historical availability
+constraints. In practice, this means lower tiers benefit from more
+seasons of training data, while higher tiers benefit from richer
+contextual signals. The comparison across tiers helps answer whether
+additional feature groups meaningfully improve forecasts enough to
+offset the loss of historical sample size.</p>
+<table style="width:6%;">
+<colgroup>
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>## Forecast Horizons</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>## Exploratory Data Analysis (EDA)</td>
+</tr>
+<tr class="even">
+<td>Exploratory data analysis was conducted before model development to
+understand overall attendance behavior, identify relationships between
+major contextual factors, and guide feature engineering decisions. These
+visualizations were used to summarize broad attendance patterns across
+seasons and to assess how scheduling, opponent quality, weather,
+promotions, and academic timing may influence turnout before fitting
+predictive models.</td>
+</tr>
+<tr class="odd">
+<td>### Overall Attendance Patterns</td>
+</tr>
+<tr class="even">
+<td>The following plots summarize long-run attendance behavior across
+UNC baseball home games, including season-level trends, distributional
+patterns, within-season dynamics, and the evaluation-period split used
+later in modeling.</td>
+</tr>
+<tr class="odd">
+<td><img src="README_ASSETS/Average%20Home%20Attendance.png" /> <img
+src="README_ASSETS/Attendance%20Distribution.png" /> <img
+src="README_ASSETS/Within-Season%20Patterns.png" /> <img
+src="README_ASSETS/Evaluation%20Period.png" /></td>
+</tr>
+<tr class="even">
+<td>These plots show that attendance has increased substantially over
+time, especially in more recent seasons, while still exhibiting
+meaningful game-to-game variability. Attendance generally rises later in
+the season, with stronger averages in postseason settings and later
+calendar months. The evaluation-period visualizations also show that the
+held-out seasons come from a higher-attendance regime than much of the
+earlier historical sample, making forecasting more challenging.</td>
+</tr>
+<tr class="odd">
+<td>### Scheduling Factors</td>
+</tr>
+<tr class="even">
+<td><img src="README_ASSETS/Scheduling%20Factors.png" /></td>
+</tr>
+<tr class="odd">
+<td>Scheduling variables show clear relationships with attendance.
+Weekend games outperform weekday games across time buckets, and night
+games tend to draw the strongest crowds. Attendance also increases
+substantially in postseason settings such as regionals and super
+regionals. Academic timing appears relevant as well, with school nights,
+breaks, and exams showing noticeable differences in turnout.</td>
+</tr>
+<tr class="even">
+<td>### Opponent Factors</td>
+</tr>
+<tr class="odd">
+<td><img src="README_ASSETS/Opponent%20Factors.png" /></td>
+</tr>
+<tr class="even">
+<td>Opponent-related patterns suggest that matchup quality plays an
+important role in fan turnout. ACC games and rivalry games draw stronger
+attendance than non-conference or non-rival matchups, and several
+opponents consistently appear among the strongest draws. The
+win-percentage and strength-difference views suggest that more
+competitive or higher-interest matchups tend to attract more fans than
+games with weaker opponents or more lopsided expectations.</td>
+</tr>
+<tr class="odd">
+<td>### Weather Factors</td>
+</tr>
+<tr class="even">
+<td><img src="README_ASSETS/Weather%20Factors.png" /></td>
+</tr>
+<tr class="odd">
+<td>Weather appears to be an important driver of attendance,
+particularly for shorter-horizon forecasts. Attendance increases
+steadily as temperature moves from cold to warm conditions, and a
+similar pattern appears for the comfort index. The interaction plots
+also suggest that favorable weather becomes especially valuable later in
+the season, when warm and comfortable conditions align with the highest
+observed turnout.</td>
+</tr>
+<tr class="even">
+<td>### Promotion Factors</td>
+</tr>
+<tr class="odd">
+<td><img src="README_ASSETS/Promotion%20Factors.png" /></td>
+</tr>
+<tr class="even">
+<td>Promotions are associated with higher attendance overall, with
+promoted games drawing substantially larger average crowds than
+non-promoted games. This pattern appears on both weekdays and weekends,
+although promoted weekend games still produce the highest turnout
+overall. Promotion-type comparisons suggest that some event types, such
+as fireworks, kids events, and giveaways, are associated with
+particularly strong attendance, though some categories have smaller
+sample sizes and should be interpreted cautiously.</td>
+</tr>
+<tr class="odd">
+<td>### Summary of EDA Takeaways</td>
+</tr>
+<tr class="even">
+<td>Overall, the EDA suggested that attendance is shaped by a
+combination of historical attendance trends, scheduling context,
+opponent quality, weather conditions, promotions, and academic calendar
+timing. These findings supported the inclusion of feature groups related
+to attendance history, scheduling, opponent context, weather, academics,
+search interest, performance, and promotions in the downstream modeling
+pipeline.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="modeling-pipeline">Modeling Pipeline</h2>
+<p>The modeling workflow was designed to evaluate attendance forecasts
+under both prediction contexts using a consistent, chronological, and
+leakage-aware process. Each tier was modeled independently so that
+performance could be compared across different levels of feature
+availability and historical depth.</p>
+<p><img src="README_ASSETS/pipeline_flow_viz_balanced.svg" /></p>
+<h3 id="data-split-and-validation-strategy">Data Split and Validation
+Strategy</h3>
+<p>All modeling was performed using chronological splits rather than
+random sampling. Seasons <strong>2020</strong> and <strong>2021</strong>
+were excluded because attendance in those years was artificially
+affected by COVID-era restrictions, and <strong>2008</strong> was
+excluded because Boshamer Stadium was under reconstruction.</p>
+<p>For each tier, the data was split into:</p>
+<ul>
+<li><strong>Training window:</strong> all eligible seasons prior to the
+evaluation years</li>
+<li><strong>Evaluation years:</strong> <strong>2024</strong> and
+<strong>2025</strong></li>
+<li><strong>Forward prediction year:</strong> <strong>2026</strong>,
+used only for rolling prediction after model selection</li>
+</ul>
+<p>Rather than using standard cross-validation, the project used a
+<strong>weighted rolling cross-validation</strong> framework. For each
+evaluation year, the model was trained only on prior seasons and then
+validated on the next chronological season. This better reflects the
+real forecasting setting, where future games must be predicted using
+only past information.</p>
+<p>To place greater emphasis on recent performance, evaluation errors
+were weighted by year, with <strong>2025 receiving more weight than
+2024</strong>. Within each training fold, older seasons were also
+down-weighted using a <strong>seasonal decay parameter</strong>,
+allowing the pipeline to favor more recent historical data without fully
+discarding earlier seasons.</p>
+<h3 id="model-families">Model Families</h3>
+<p>Five candidate model families were evaluated in both the preseason
+and short-term forecast settings:</p>
+<ul>
+<li><strong>Linear Regression</strong></li>
+<li><strong>Elastic Net</strong></li>
+<li><strong>Random Forest</strong></li>
+<li><strong>XGBoost</strong></li>
+<li><strong>LightGBM</strong></li>
+</ul>
+<p>This set was chosen to compare simple linear baselines, regularized
+linear models, and more flexible tree-based ensemble methods. For linear
+models, the pipeline also tested multiple scaling strategies:</p>
+<ul>
+<li><strong>No scaling</strong></li>
+<li><strong>StandardScaler</strong></li>
+<li><strong>RobustScaler</strong></li>
+<li><strong>MinMaxScaler</strong></li>
+</ul>
+<p>Tree-based models were fit without scaling.</p>
+<h3 id="optimization">Optimization</h3>
+<p>For each tier and model combination, hyperparameters were tuned using
+<strong>Optuna</strong> with weighted rolling cross-validation as the
+objective. The optimization process selected:</p>
+<ul>
+<li>model-specific hyperparameters</li>
+<li>training start year</li>
+<li>seasonal decay strength</li>
+<li>scaler choice, when relevant</li>
+</ul>
+<p>This allowed the pipeline to jointly determine not only the best
+model configuration, but also how much historical data to include and
+how strongly to prioritize recent seasons.</p>
+<h3 id="backward-feature-elimination">Backward Feature Elimination</h3>
+<p>After the initial optimization stage, the best configuration for each
+tier was passed through a <strong>backward feature elimination
+(BFE)</strong> procedure. Starting from the full feature set for that
+tier, features were removed one at a time based on whether their removal
+improved weighted cross-validation RMSE.</p>
+<p>This step served two purposes:</p>
+<ul>
+<li>reduce unnecessary complexity</li>
+<li>improve generalization by removing weak or redundant predictors</li>
+</ul>
+<p>Because the dataset included many correlated schedule,
+attendance-history, weather, and performance features, this step was
+especially important for simplifying the final models.</p>
+<h3 id="re-optimization-on-reduced-feature-sets">Re-Optimization on
+Reduced Feature Sets</h3>
+<p>Once each tier’s reduced feature set was identified, the winning
+model family was <strong>re-optimized</strong> on the smaller predictor
+set. This final tuning step ensured that the selected hyperparameters,
+decay settings, and preprocessing choices were matched to the reduced
+feature space rather than inherited from the original full model.</p>
+<p>The resulting reduced models were used for final tier comparisons,
+rolling predictions, and interpretability analysis.</p>
+<h3 id="evaluation-metrics">Evaluation Metrics</h3>
+<p>Model performance was compared using several complementary
+metrics:</p>
+<ul>
+<li><strong>Weighted CV RMSE</strong> as the primary selection
+metric</li>
+<li><strong>RMSE</strong></li>
+<li><strong>MAE</strong></li>
+<li><strong>R²</strong></li>
+<li><strong>MAPE</strong></li>
+<li><strong>Percent of predictions within 500 attendees</strong></li>
+</ul>
+<p>A simple attendance-history baseline was also computed for each tier
+so that model improvements could be interpreted relative to a practical
+benchmark rather than in isolation.</p>
+<h3 id="final-model-use">Final Model Use</h3>
+<p>After model selection, the best reduced pipeline for each forecasting
+context was retrained in a rolling fashion and used to generate
+season-level predictions for <strong>2024</strong>,
+<strong>2025</strong>, and true forward predictions for
+<strong>2026</strong>. The same modeling recipe was then transferred to
+<strong>NC State baseball</strong> and <strong>UNC basketball</strong>
+to evaluate how well the framework generalized beyond the original UNC
+baseball setting.</p>
+<hr />
+<h2 id="results">Results</h2>
+<p>Results are presented separately for the <strong>preseason</strong>
+and <strong>two-day-ahead update</strong> forecasting contexts, followed
+by a direct comparison of the best model from each setting.</p>
+<h3 id="preseason-results">Preseason Results</h3>
+<p>Across all preseason tiers, the best reduced model was
+<strong>Elastic Net</strong>. Performance varied meaningfully across
+tiers, showing that adding more contextual variables did not always
+improve accuracy once the loss of historical training data was taken
+into account.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+<col style="width: 6%" />
+<col style="width: 9%" />
+<col style="width: 19%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tier</th>
+<th style="text-align: right;">wCV RMSE</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">R²</th>
+<th style="text-align: right;">MAPE</th>
+<th style="text-align: right;">Within 500</th>
+<th style="text-align: right;">vs. Baseline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tier 1</td>
+<td style="text-align: right;">425</td>
+<td style="text-align: right;">418</td>
+<td style="text-align: right;">329</td>
+<td style="text-align: right;">0.5879</td>
+<td style="text-align: right;">11.5%</td>
+<td style="text-align: right;">82%</td>
+<td style="text-align: right;">+35.9%</td>
+</tr>
+<tr class="even">
+<td>Tier 2</td>
+<td style="text-align: right;">425</td>
+<td style="text-align: right;">417</td>
+<td style="text-align: right;">338</td>
+<td style="text-align: right;">0.5902</td>
+<td style="text-align: right;">11.9%</td>
+<td style="text-align: right;">82%</td>
+<td style="text-align: right;">+35.8%</td>
+</tr>
+<tr class="odd">
+<td>Tier 3</td>
+<td style="text-align: right;">489</td>
+<td style="text-align: right;">509</td>
+<td style="text-align: right;">398</td>
+<td style="text-align: right;">0.3890</td>
+<td style="text-align: right;">15.2%</td>
+<td style="text-align: right;">68%</td>
+<td style="text-align: right;">+26.1%</td>
+</tr>
+<tr class="even">
+<td><strong>Tier 4</strong></td>
+<td style="text-align: right;"><strong>406</strong></td>
+<td style="text-align: right;"><strong>406</strong></td>
+<td style="text-align: right;"><strong>330</strong></td>
+<td style="text-align: right;"><strong>0.6128</strong></td>
+<td style="text-align: right;"><strong>11.6%</strong></td>
+<td style="text-align: right;"><strong>82%</strong></td>
+<td style="text-align: right;"><strong>+38.8%</strong></td>
+</tr>
+<tr class="odd">
+<td>Tier 5</td>
+<td style="text-align: right;">409</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">340</td>
+<td style="text-align: right;">0.5855</td>
+<td style="text-align: right;">12.5%</td>
+<td style="text-align: right;">75%</td>
+<td style="text-align: right;">+38.2%</td>
+</tr>
+</tbody>
+</table>
+<p>The strongest preseason model came from <strong>Tier 4</strong>,
+which balanced a relatively rich feature set with enough historical data
+to remain stable. Tier 4 outperformed both the leaner early tiers and
+the promotion-heavy Tier 5, suggesting that <strong>academic calendar
+detail and broader preseason context added value</strong>, while the
+shorter historical window in Tier 5 limited the gains from additional
+promotion variables. In contrast, Tier 3 performed notably worse than
+the surrounding tiers, indicating that the added previous-season
+performance variables alone did not justify the reduction in training
+history under the preseason setup.</p>
+<p>Rolling season evaluation for the winning preseason model showed
+consistent performance in 2024 and 2025, with some degradation in
+forward prediction on the partially observed 2026 season. The Tier 4
+preseason model achieved an RMSE of <strong>402</strong> in 2024 and
+<strong>409</strong> in 2025, with corresponding R² values of
+<strong>0.5134</strong> and <strong>0.5312</strong>. On the first 20
+scored games of 2026, it produced an RMSE of <strong>447</strong>, MAE
+of <strong>328</strong>, and R² of <strong>0.0696</strong>.</p>
+<p>Overall, the preseason model improved on the attendance-history
+baseline by <strong>38.8%</strong>, with <strong>82%</strong> of
+evaluation predictions falling within 500 attendees. This level of
+accuracy suggests that preseason forecasts are useful for longer-range
+planning tasks such as staffing expectations, budget setting, and
+identifying likely high- and low-demand games before opening day.</p>
+<h3 id="two-day-ahead-update-results">Two-Day-Ahead Update Results</h3>
+<p>The two-day-ahead update models also favored <strong>Elastic
+Net</strong> across all tiers, but performance improved substantially
+once near-term contextual information was incorporated. In this
+forecasting setting, the best model came from the richest tier.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+<col style="width: 6%" />
+<col style="width: 9%" />
+<col style="width: 19%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tier</th>
+<th style="text-align: right;">wCV RMSE</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">R²</th>
+<th style="text-align: right;">MAPE</th>
+<th style="text-align: right;">Within 500</th>
+<th style="text-align: right;">vs. Baseline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tier 1</td>
+<td style="text-align: right;">373</td>
+<td style="text-align: right;">369</td>
+<td style="text-align: right;">287</td>
+<td style="text-align: right;">0.7496</td>
+<td style="text-align: right;">9.9%</td>
+<td style="text-align: right;">86%</td>
+<td style="text-align: right;">+40.5%</td>
+</tr>
+<tr class="even">
+<td>Tier 2</td>
+<td style="text-align: right;">370</td>
+<td style="text-align: right;">367</td>
+<td style="text-align: right;">297</td>
+<td style="text-align: right;">0.7520</td>
+<td style="text-align: right;">10.2%</td>
+<td style="text-align: right;">86%</td>
+<td style="text-align: right;">+40.9%</td>
+</tr>
+<tr class="odd">
+<td>Tier 3</td>
+<td style="text-align: right;">361</td>
+<td style="text-align: right;">357</td>
+<td style="text-align: right;">284</td>
+<td style="text-align: right;">0.7659</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: right;">88%</td>
+<td style="text-align: right;">+42.4%</td>
+</tr>
+<tr class="even">
+<td>Tier 4</td>
+<td style="text-align: right;">361</td>
+<td style="text-align: right;">353</td>
+<td style="text-align: right;">275</td>
+<td style="text-align: right;">0.7706</td>
+<td style="text-align: right;">9.2%</td>
+<td style="text-align: right;">82%</td>
+<td style="text-align: right;">+42.3%</td>
+</tr>
+<tr class="odd">
+<td><strong>Tier 5</strong></td>
+<td style="text-align: right;"><strong>327</strong></td>
+<td style="text-align: right;"><strong>326</strong></td>
+<td style="text-align: right;"><strong>260</strong></td>
+<td style="text-align: right;"><strong>0.8048</strong></td>
+<td style="text-align: right;"><strong>9.1%</strong></td>
+<td style="text-align: right;"><strong>88%</strong></td>
+<td style="text-align: right;"><strong>+48.0%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The best update model came from <strong>Tier 5</strong>, indicating
+that in the shorter-horizon setting, the additional information from
+promotions and full contextual coverage more than offset the smaller
+historical training window. This pattern contrasts with the preseason
+setting and suggests that <strong>richer real-time context becomes more
+valuable closer to game day</strong>, especially when combined with
+recent attendance behavior, weather, and current-season conditions.</p>
+<p>Rolling evaluation for the winning two-day-ahead model showed strong
+performance in both held-out seasons and remained more stable than the
+preseason model in 2026. The Tier 5 model achieved an RMSE of
+<strong>321</strong> and R² of <strong>0.8168</strong> in 2024, and an
+RMSE of <strong>330</strong> and R² of <strong>0.7230</strong> in 2025.
+On the first 20 scored games of 2026, it produced an RMSE of
+<strong>390</strong>, MAE of <strong>332</strong>, and R² of
+<strong>0.2897</strong>.</p>
+<p>Across the 2024–2025 evaluation years, the two-day-ahead model
+reduced RMSE to <strong>326</strong>, achieved <strong>9.1%
+MAPE</strong>, and placed <strong>88%</strong> of predictions within 500
+attendees. It improved on the baseline by <strong>48.0%</strong>, making
+it the strongest overall forecasting configuration in the project. : ###
+Prediction Context Comparison</p>
+<p>A direct comparison of the best reduced model from each forecasting
+context highlights the value of additional near-term information.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 6%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 6%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Context</th>
+<th>Tier</th>
+<th>Model</th>
+<th style="text-align: right;">Features</th>
+<th style="text-align: right;">wCV RMSE</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">R²</th>
+<th style="text-align: right;">MAPE</th>
+<th style="text-align: right;">Within 500</th>
+<th style="text-align: right;">vs. Baseline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Preseason</td>
+<td>Tier 4</td>
+<td>Elastic Net</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">406</td>
+<td style="text-align: right;">406</td>
+<td style="text-align: right;">330</td>
+<td style="text-align: right;">0.6128</td>
+<td style="text-align: right;">11.6%</td>
+<td style="text-align: right;">82%</td>
+<td style="text-align: right;">+38.8%</td>
+</tr>
+<tr class="even">
+<td>Two-Day-Ahead</td>
+<td>Tier 5</td>
+<td>Elastic Net</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">327</td>
+<td style="text-align: right;">326</td>
+<td style="text-align: right;">260</td>
+<td style="text-align: right;">0.8048</td>
+<td style="text-align: right;">9.1%</td>
+<td style="text-align: right;">88%</td>
+<td style="text-align: right;">+48.0%</td>
+</tr>
+</tbody>
+</table>
+<p>The two-day-ahead model improved RMSE by <strong>80
+attendees</strong>, or about <strong>19.7%</strong>, relative to the
+best preseason model. This gain came from incorporating information
+unavailable before the season, including <strong>weather forecasts,
+current team form, in-season attendance history, and in-season Google
+Trends signals</strong>. The year-by-year breakdown shows that the
+update model outperformed the preseason model in both evaluation
+seasons:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Context</th>
+<th style="text-align: right;">2024 RMSE</th>
+<th style="text-align: right;">2024 R²</th>
+<th style="text-align: right;">2025 RMSE</th>
+<th style="text-align: right;">2025 R²</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Preseason</td>
+<td style="text-align: right;">402</td>
+<td style="text-align: right;">0.5134</td>
+<td style="text-align: right;">409</td>
+<td style="text-align: right;">0.5312</td>
+</tr>
+<tr class="even">
+<td>Two-Day-Ahead</td>
+<td style="text-align: right;">321</td>
+<td style="text-align: right;">0.8168</td>
+<td style="text-align: right;">330</td>
+<td style="text-align: right;">0.7230</td>
+</tr>
+</tbody>
+</table>
+<p>Together, these results show that the preseason model is strong
+enough for strategic planning before opening day, while the
+two-day-ahead update provides a more accurate operational forecast once
+short-term contextual information becomes available. The gap between the
+two settings also gives a practical estimate of the value added by
+near-term signals in attendance forecasting.</p>
+<h3 id="summary-of-findings">Summary of Findings</h3>
+<p>Several clear findings emerged from the results:</p>
+<ul>
+<li><strong>Elastic Net was the best-performing model family</strong>
+across both forecasting contexts and all winning tiers.</li>
+<li>In the <strong>preseason</strong> setting, the best balance came
+from <strong>Tier 4</strong>, where richer contextual features improved
+forecasting without sacrificing too much historical training depth.</li>
+<li>In the <strong>two-day-ahead</strong> setting, the best results came
+from <strong>Tier 5</strong>, showing that full contextual coverage is
+most useful when predictions are made close to game time.</li>
+<li>Adding near-term information reduced error by nearly
+<strong>20%</strong>, confirming that weather, recent attendance,
+current form, and current fan-interest signals provide meaningful
+forecasting value beyond preseason information alone.</li>
+<li>Even the preseason model produced substantial improvement over
+baseline, making it useful for advance planning, while the two-day-ahead
+model provided the strongest support for tactical game-day
+operations.</li>
+</ul>
+<table style="width:6%;">
+<colgroup>
+<col style="width: 5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Interpretability / Key Drivers</td>
+</tr>
+<tr class="even">
+<td>To better understand what drives attendance predictions, SHAP-based
+interpretability analysis was applied to the best reduced Elastic Net
+model in each forecasting context. We summarize both <strong>grouped
+feature importance</strong> and the <strong>most influential individual
+predictors</strong> for the winning preseason and two-day-ahead
+models.</td>
+</tr>
+<tr class="odd">
+<td>### Preseason Key Drivers <img
+src="README_ASSETS/group%20importance%20pre.png" /> <img
+src="README_ASSETS/TOP%2015%20FEATURES%20pre.png" /></td>
+</tr>
+<tr class="even">
+<td>For the winning <strong>preseason Tier 4</strong> model, the most
+important feature groups were <strong>attendance history</strong> and
+<strong>Google Trends</strong>, followed by <strong>performance</strong>
+and <strong>schedule</strong>. This suggests that before the season
+begins, the model relies most heavily on prior demand signals and
+preseason fan-interest measures rather than short-term operational
+context.</td>
+</tr>
+<tr class="odd">
+<td>At the individual-feature level, the strongest predictors were
+<strong><code>gt_youtube_preseason</code></strong>,
+<strong><code>prev_season_attendance</code></strong>, and
+<strong><code>prev_3yr_attendance</code></strong>, followed by
+additional preseason search-interest, schedule timing, and
+previous-season team-strength variables. Taken together, these results
+suggest that preseason forecasting is driven primarily by a combination
+of <strong>historical attendance momentum</strong>, <strong>preseason
+public attention</strong>, and <strong>last-season team
+quality</strong>.</td>
+</tr>
+<tr class="even">
+<td>### Two-Day-Ahead Key Drivers</td>
+</tr>
+<tr class="odd">
+<td><img src="README_ASSETS/group%20importance.png" /> <img
+src="README_ASSETS/TOP%2015%20FEATURES.png" /></td>
+</tr>
+<tr class="even">
+<td>For the winning <strong>two-day-ahead Tier 5</strong> model,
+<strong>schedule</strong> was the most important feature group by a
+large margin, followed by <strong>weather</strong>,
+<strong>academics</strong>, <strong>opponent context</strong>, and
+<strong>performance</strong>. In contrast to the preseason model,
+attendance-history features played a smaller role once more immediate
+contextual information became available close to game day.</td>
+</tr>
+<tr class="odd">
+<td>At the individual-feature level, the most influential predictors
+included <strong><code>season_year</code></strong>,
+<strong><code>day_of_week_sin</code></strong>,
+<strong><code>time_bucket_night</code></strong>,
+<strong><code>playoff</code></strong>, and
+<strong><code>att_avg_last5</code></strong>, along with
+academic-semester indicators and multiple weather-condition features.
+These results suggest that short-term attendance forecasting depends
+most on <strong>when the game is being played</strong>, <strong>what
+part of the season it is</strong>, <strong>recent local demand</strong>,
+and <strong>near-term game-day conditions</strong>.</td>
+</tr>
+<tr class="even">
+<td>### Interpretability Takeaways</td>
+</tr>
+<tr class="odd">
+<td>Across both forecasting contexts, the interpretability results show
+that attendance is not driven by a single factor. Instead, the most
+important predictors shift depending on when the prediction is
+made:</td>
+</tr>
+<tr class="even">
+<td>- <strong>Before the season</strong>, the model depends more on
+historical demand, preseason fan interest, and previous-season strength.
+- <strong>Closer to game day</strong>, the model depends more on
+schedule timing, weather, current context, and recent attendance
+behavior.</td>
+</tr>
+<tr class="odd">
+<td>This difference helps explain why the two-day-ahead model
+outperformed the preseason model: it is able to incorporate several
+important short-term signals that are unavailable before opening
+day.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="actionable-insights-for-unc-athletics">Actionable Insights for
+UNC Athletics</h2>
+<p>The model results suggest several practical takeaways for game-day
+planning and resource allocation.</p>
+<h3 id="use-preseason-forecasts-for-big-picture-planning">1. Use
+preseason forecasts for big-picture planning</h3>
+<p>The preseason model performs well enough to support higher-level
+planning before opening day. Because it draws heavily on prior
+attendance history and preseason fan-interest signals, it can help
+identify which games are likely to be stronger draws months in advance.
+This makes it useful for:</p>
+<ul>
+<li>seasonal staffing expectations</li>
+<li>budget and concessions planning</li>
+<li>early identification of likely high-demand and low-demand games</li>
+</ul>
+<h3 id="use-two-day-ahead-forecasts-for-final-operational-decisions">2.
+Use two-day-ahead forecasts for final operational decisions</h3>
+<p>The two-day-ahead model is more accurate because it incorporates
+immediate contextual information such as weather, current season timing,
+and recent attendance trends. This makes it better suited for final
+operational adjustments, including:</p>
+<ul>
+<li>last-mile staffing decisions</li>
+<li>parking and gate planning</li>
+<li>final concessions preparation</li>
+<li>short-term promotional targeting</li>
+</ul>
+<h3 id="scheduling-context-matters-most-close-to-game-day">3. Scheduling
+context matters most close to game day</h3>
+<p>Because schedule-related variables dominate the winning two-day-ahead
+model, UNC Athletics should expect the strongest attendance around
+favorable time slots, later-season games, and postseason settings. Night
+games, weekend games, and playoff-related settings appear especially
+important for turnout.</p>
+<h3 id="weather-should-meaningfully-adjust-short-term-expectations">4.
+Weather should meaningfully adjust short-term expectations</h3>
+<p>Weather-related features became much more important in the short-term
+model than in the preseason model. This suggests that attendance
+expectations should be adjusted meaningfully when near-term conditions
+change, especially for games that are otherwise on the margin between
+moderate and strong turnout.</p>
+<h3 id="historical-demand-remains-the-foundation">5. Historical demand
+remains the foundation</h3>
+<p>Even though short-term context improves accuracy, historical
+attendance signals remain important across both models. Prior-season
+attendance and recent attendance behavior continue to provide a strong
+baseline expectation for likely demand.</p>
+<h3 id="fan-interest-signals-are-valuable-before-the-season-begins">6.
+Fan-interest signals are valuable before the season begins</h3>
+<p>The importance of preseason Google Trends in the winning preseason
+model suggests that public attention may offer useful early signal
+beyond simple schedule-based planning. This can help distinguish games
+that look similar on paper but enter the season with different levels of
+audience interest.</p>
+<hr />
+<h2 id="generalization">Generalization</h2>
+<p>One of the things we wanted to test was whether this pipeline
+actually works outside of UNC baseball, or if the results were just
+specific to Boshamer Stadium. To find out, we took the UNC baseball
+model configs and applied them directly to two other contexts without
+changing any hyperparameters: <strong>NC State baseball</strong> (same
+sport, different school) and <strong>UNC men’s basketball</strong> (same
+school, different sport).</p>
+<h3 id="how-we-set-up-the-transfer">How We Set Up the Transfer</h3>
+<p>We used the pre-BFE day-before configurations from UNC baseball
+rather than the post-BFE ones, since backward feature elimination was
+tuned specifically to UNC baseball data and wouldn’t necessarily make
+sense for a different dataset. Everything else stayed the same (model
+type, hyperparameters, scaler, decay, and preprocessing).</p>
+<p>We tested three transfer pairs:</p>
+<ul>
+<li><strong>UNC Baseball Tier 1 → NC State Baseball Tier 1:</strong>
+Same sport, different venue (Doak Field), different fan base. Tests
+whether the core features like schedule, weather, opponent, and
+attendance history generalize across schools.</li>
+<li><strong>UNC Baseball Tier 1 → UNC Basketball Tier 1:</strong> Same
+school, completely different sport. The Dean Dome is a near-capacity
+indoor venue, so the attendance dynamics are very different from an
+outdoor baseball stadium.</li>
+<li><strong>UNC Baseball Tier 4 → UNC Basketball Tier 2:</strong> Same
+idea as above, but this one adds academic calendar and enrollment
+features to see if those help for basketball the way they help for
+baseball.</li>
+</ul>
+<h3 id="building-the-transfer-datasets">Building the Transfer
+Datasets</h3>
+<p>We built the NC State and UNC basketball datasets from scratch using
+the same general approach as UNC baseball. Each one included game-level
+attendance, schedule info, opponent data, and weather pulled from
+Open-Meteo using venue-specific coordinates. For basketball, we also
+included academic calendar and enrollment data in the Tier 2
+version.</p>
+<p>NC State used Doak Field as the home venue. UNC basketball used the
+Dean E. Smith Center. Both excluded COVID seasons and followed the same
+temporal rules as the baseball pipeline.</p>
+<h3 id="results-1">Results</h3>
+<p>Every transfer context beat its baseline, which was a good sign that
+the recipe actually generalizes.</p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Context</th>
+<th>Equiv Tier</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">R²</th>
+<th style="text-align: right;">MAPE</th>
+<th style="text-align: right;">&lt;500</th>
+<th style="text-align: right;">vs BL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>UNC Baseball T1</td>
+<td>(native)</td>
+<td style="text-align: right;">423</td>
+<td style="text-align: right;">335</td>
+<td style="text-align: right;">0.670</td>
+<td style="text-align: right;">11.0%</td>
+<td style="text-align: right;">80%</td>
+<td style="text-align: right;">+32.4%</td>
+</tr>
+<tr class="even">
+<td>NC State Baseball</td>
+<td>UNC T1</td>
+<td style="text-align: right;">263</td>
+<td style="text-align: right;">206</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">7.7%</td>
+<td style="text-align: right;">91%</td>
+<td style="text-align: right;">+21.4%</td>
+</tr>
+<tr class="odd">
+<td>UNC Basketball T1</td>
+<td>UNC T1</td>
+<td style="text-align: right;">1,182</td>
+<td style="text-align: right;">904</td>
+<td style="text-align: right;">0.311</td>
+<td style="text-align: right;">4.3%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">+45.9%</td>
+</tr>
+<tr class="even">
+<td>UNC Baseball T4</td>
+<td>(native)</td>
+<td style="text-align: right;">446</td>
+<td style="text-align: right;">348</td>
+<td style="text-align: right;">0.634</td>
+<td style="text-align: right;">12.3%</td>
+<td style="text-align: right;">70%</td>
+<td style="text-align: right;">+28.8%</td>
+</tr>
+<tr class="odd">
+<td>UNC Basketball T2</td>
+<td>UNC T4</td>
+<td style="text-align: right;">1,694</td>
+<td style="text-align: right;">1,419</td>
+<td style="text-align: right;">-0.415</td>
+<td style="text-align: right;">6.8%</td>
+<td style="text-align: right;">17%</td>
+<td style="text-align: right;">+22.5%</td>
+</tr>
+</tbody>
+</table>
+<p>The first and fourth rows are UNC baseball’s own performance as a
+reference point.</p>
+<p><strong>NC State</strong> had the lowest percentage error of any
+baseball context at 7.7% MAPE, with 91% of predictions within 500 fans.
+The R² being near zero looks bad at first glance, but it’s actually just
+because Doak Field attendance doesn’t vary much game to game, so even
+when the predictions are accurate, there isn’t much variance for R² to
+“explain.” The MAPE and within-500 numbers tell the real story.</p>
+<p><strong>UNC Basketball Tier 1</strong> had the lowest MAPE of any
+context in the entire project at 4.3%, and it beat baseline by nearly
+46%. The RMSE of 1,182 sounds high, but the Dean Dome averages around
+19,500 per game and is close to full most nights. In percentage terms
+the model is actually really precise.</p>
+<p><strong>UNC Basketball Tier 2</strong> added academic calendar
+features but actually got worse, with a negative R². This makes sense
+when you think about it. For basketball, the Dean Dome sells out whether
+it’s exam week or not, so those features just add noise.</p>
+<h3 id="what-drives-attendance-across-sports">What Drives Attendance
+Across Sports</h3>
+<p>We ran SHAP on each context’s Tier 1 model to compare feature
+importance on an apples-to-apples basis (Tier 1 is the common feature
+set available everywhere).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Factor</th>
+<th style="text-align: center;">UNC Baseball</th>
+<th style="text-align: center;">UNC Basketball</th>
+<th style="text-align: center;">NC State Baseball</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Attendance History</td>
+<td style="text-align: center;">34%</td>
+<td style="text-align: center;">12%</td>
+<td style="text-align: center;">43%</td>
+</tr>
+<tr class="even">
+<td>Schedule &amp; Timing</td>
+<td style="text-align: center;">33%</td>
+<td style="text-align: center;">51%</td>
+<td style="text-align: center;">35%</td>
+</tr>
+<tr class="odd">
+<td>Opponent</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: center;">14%</td>
+<td style="text-align: center;">10%</td>
+</tr>
+<tr class="even">
+<td>Weather</td>
+<td style="text-align: center;">11%</td>
+<td style="text-align: center;">16%</td>
+<td style="text-align: center;">9%</td>
+</tr>
+<tr class="odd">
+<td>Performance</td>
+<td style="text-align: center;">4%</td>
+<td style="text-align: center;">5%</td>
+<td style="text-align: center;">4%</td>
+</tr>
+<tr class="even">
+<td>Academics</td>
+<td style="text-align: center;">4%</td>
+<td style="text-align: center;">2%</td>
+<td style="text-align: center;">0%</td>
+</tr>
+</tbody>
+</table>
+<p>A few things stood out:</p>
+<ul>
+<li><strong>Schedule and opponent matter everywhere.</strong> Doesn’t
+matter what sport or venue, when the game is played and who’s playing
+are always important.</li>
+<li><strong>Attendance history depends on the venue.</strong> It’s huge
+for both baseball contexts (34% and 43%) because attendance varies a lot
+game to game. For basketball it’s only 12% because the Dean Dome is near
+capacity most nights, so there just isn’t much to predict.</li>
+<li><strong>Weather affects all three, even indoor basketball.</strong>
+Fans still have to get to the venue, so bad weather can suppress turnout
+even when the game itself is indoors.</li>
+<li><strong>Academics only matter at Boshamer.</strong> The 4% for UNC
+baseball reflects students walking to games during class hours. For NC
+State and basketball, this effect is basically zero.</li>
+</ul>
+<h3 id="what-this-means">What This Means</h3>
+<p>The main takeaway is that the pipeline works beyond UNC baseball. The
+same Elastic Net setup, with no re-tuning at all, beat baseline in every
+context we tested. The core features (schedule, opponent, weather,
+attendance history) transfer well across sports and venues, though
+context-specific features like academic calendar don’t always carry
+over.</p>
+<p>This gives us confidence that extending the framework to other UNC
+sports like softball, soccer, or lacrosse is a reasonable next step. The
+core methodology should hold up, though feature groups would need to be
+evaluated fresh for each new sport rather than assumed to work the same
+way.</p>
+<table style="width:6%;">
+<colgroup>
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>## Streamlit App</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>## Repository Structure</td>
+</tr>
+<tr class="even">
+<td>The repository is organized into folders for the deployed Streamlit
+app, data scraping and refresh workflows, model scoring, supporting
+analysis, and project deliverables.</td>
+</tr>
+<tr class="odd">
+<td>- <strong><code>APP/</code></strong> Contains the Streamlit
+application and the app-facing prediction files stored in
+<code>APP/data</code>. The app reads preseason and midseason prediction
+bundles from this folder and presents them through the interactive
+dashboard. :contentReference<span data-index="0">oaicite:0</span></td>
+</tr>
+<tr class="even">
+<td>- <strong><code>SCRAPERS/</code></strong> Contains the attendance
+scraper, performance-data refresh notebooks, and the automation script
+used to run the daily data refresh pipeline. This folder supports the
+end-to-end update process that refreshes source data and prepares
+downstream inputs for scoring. :contentReference<span
+data-index="1">oaicite:1</span></td>
+</tr>
+<tr class="odd">
+<td>- <strong><code>SCORING/</code></strong> Contains the scoring
+notebook used to generate the updated app prediction outputs. The
+refresh pipeline runs this notebook after the upstream attendance and
+performance data are refreshed. :contentReference<span
+data-index="2">oaicite:2</span></td>
+</tr>
+<tr class="even">
+<td>- <strong><code>DATA ANALYSIS/</code></strong> Contains exploratory
+analysis notebooks, modeling analysis, and other project development
+materials used during research and experimentation.</td>
+</tr>
+<tr class="odd">
+<td>- <strong><code>DATAPLANS/</code></strong> Stores project planning
+materials related to data collection, data organization, and supporting
+documentation such as data plans and dictionaries.</td>
+</tr>
+<tr class="even">
+<td>- <strong><code>LITREVIEWS/</code></strong> Contains literature
+review materials and related written project research.</td>
+</tr>
+<tr class="odd">
+<td>- <strong><code>PRESENTATION/</code></strong> Stores presentation
+deliverables used to communicate project results and findings.</td>
+</tr>
+<tr class="even">
+<td>- <strong><code>PROJECT_PLAN_PRESENTATION/</code></strong> Contains
+earlier planning presentation materials developed during the project
+setup phase.</td>
+</tr>
+<tr class="odd">
+<td>- <strong><code>README_ASSETS/</code></strong> Stores images and
+visual assets used in the main project README, including plots,
+diagrams, and workflow graphics.</td>
+</tr>
+<tr class="even">
+<td>- <strong><code>.gitignore</code></strong> Excludes unnecessary
+intermediate files, caches, and other nonessential artifacts from
+version control.</td>
+</tr>
+<tr class="odd">
+<td>- <strong><code>README.md</code></strong> The main project landing
+page, which documents the project scope, methods, results, app, and
+reproducibility details.</td>
+</tr>
+<tr class="even">
+<td>Overall, the repository is structured so that the app, refresh
+pipeline, and modeling workflow are separated clearly from supporting
+analysis and presentation materials. This makes it easier to maintain
+the deployed application while preserving the broader project
+documentation and technical work.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="quick-start-reproducibility">Quick Start / Reproducibility</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Python 3.9+</li>
+<li>Google Colab or a local Jupyter environment</li>
+<li>Required packages: <code>pandas</code>, <code>numpy</code>,
+<code>scikit-learn</code>, <code>optuna</code>, <code>shap</code>,
+<code>xgboost</code>, <code>lightgbm</code>,
+<code>matplotlib</code></li>
+</ul>
+<h3 id="running-the-modeling-notebook">Running the Modeling
+Notebook</h3>
+<ol type="1">
+<li>Clone the repository and navigate to the project root.</li>
+<li>Ensure all CSV data files listed in the Data Sources section above
+are in the working directory (or adjust file paths as needed).</li>
+<li>Open the main modeling notebook
+(<code>Capstone_Unified_Final.ipynb</code>) in Google Colab or
+Jupyter.</li>
+<li>Run all cells sequentially from top to bottom. The notebook is
+designed to execute end-to-end without manual intervention.</li>
+<li>Full execution takes approximately 45-60 minutes on Google Colab,
+with the majority of time spent on Optuna optimization (5,000 trials per
+context) and backward feature elimination.</li>
+</ol>
+<h3 id="running-the-scrapers">Running the Scrapers</h3>
+<ol type="1">
+<li>The attendance and schedule scrapers are located in the
+<code>SCRAPERS/</code> directory.</li>
+<li>Run the base baseball scraper first to produce
+<code>unc_baseball_final.csv</code>.</li>
+<li>Run the performance scraper next, which takes the base scrape output
+as input and produces the season performance file.</li>
+<li>NC State and UNC basketball scrapers can be run independently to
+produce their respective datasets.</li>
+</ol>
+<h3 id="running-the-streamlit-app-locally">Running the Streamlit App
+Locally</h3>
+<ol type="1">
+<li>Navigate to the <code>APP/</code> directory.</li>
+<li>Install Streamlit: <code>pip install streamlit</code></li>
+<li>Run: <code>streamlit run app.py</code></li>
+<li>The app reads prediction CSVs from <code>APP/data/</code>. To update
+predictions, re-run the scoring notebook in <code>SCORING/</code> after
+refreshing upstream data.</li>
+</ol>
+<h3 id="reproducibility-notes">Reproducibility Notes</h3>
+<ul>
+<li>All random operations use <code>SEED=22</code> for
+reproducibility.</li>
+<li>Optuna uses the TPE sampler with the same seed, so optimization
+results are deterministic given the same input data.</li>
+<li>Weather data is fetched from the Open-Meteo historical API, which
+returns consistent results for the same date ranges.</li>
+<li>The only variability comes from upstream data changes (new games
+played, updated attendance figures), which are expected in a live
+forecasting system.</li>
+</ul>
+<table style="width:6%;">
+<colgroup>
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>## Limitations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>## Future Work</td>
+</tr>
+<tr class="even">
+<td>There are several natural directions for extending this
+framework.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Annual retraining and maintenance:</strong> Retrain the
+pipeline after each completed season so the models remain calibrated to
+the most recent attendance environment.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Integrate ticket presales:</strong> Adding presale or
+advance ticketing information would likely improve short-horizon
+forecasts and provide a more direct signal of near-term demand.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Develop an intermediate forecast horizon:</strong> A
+mid-range model for the next one to two weeks could fill the gap between
+preseason planning and two-day-ahead operations.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Expand to additional UNC sports:</strong> The general
+framework could be extended to other programs such as softball, soccer,
+lacrosse, or volleyball, with sport-specific feature adaptations where
+needed.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Refine promotion modeling:</strong> With more historical
+promotion data, future versions could better estimate which promotion
+types work best under different schedule, opponent, and performance
+conditions.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Add richer campus and local context:</strong> Additional
+features such as concurrent campus events, local weather severity
+alerts, student calendar intensity, and regional competition for
+attention may improve accuracy.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Incorporate uncertainty estimates into
+deployment:</strong> Future versions of the app could surface prediction
+intervals or uncertainty bands so stakeholders can plan around
+attendance ranges rather than single-point estimates alone.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Evaluate transfer learning more systematically:</strong>
+Additional work could test how well the modeling recipe generalizes
+across venues, sports, and institutions, and identify which feature
+groups transfer best.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Support more operational scenario analysis:</strong> The
+Streamlit tool could be extended to let users test what-if scenarios for
+promotions, weather changes, or scheduling changes in a more structured
+way.</td>
+</tr>
+<tr class="even">
+<td>Together, these next steps would strengthen both the predictive
+performance and the practical usefulness of the attendance-forecasting
+framework.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

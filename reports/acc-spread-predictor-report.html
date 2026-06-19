@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ACC Spread Predictor</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="report-style.css" />
+</head>
+<body>
+<a class="back" href="../index.html">← Back to portfolio</a>
+<header id="title-block-header">
+<h1 class="title">ACC Spread Predictor</h1>
+</header>
+<h2 id="acc-mens-basketball-second-half-score-prediction">ACC Men’s
+Basketball Second-Half Score Prediction</h2>
+<h3 id="full-project-summary">Full Project Summary</h3>
+<h3 id="problem-definition-goal">1. Problem Definition &amp; Goal</h3>
+<p>The goal of this project is to <strong>predict second-half outcomes
+for ACC men’s basketball games</strong>, with a primary focus on:</p>
+<ul>
+<li><p><strong>Target:</strong></p>
+<ul>
+<li><code>spread = home_score − away_score</code></li>
+</ul></li>
+</ul>
+<p>The core objective is <strong>minimizing Mean Absolute Error
+(MAE)</strong> on second-half games, while maintaining realistic,
+deployable modeling assumptions (no leakage, rolling training).</p>
+<p>A secondary goal is to construct <strong>prediction
+intervals</strong> for the spread with:</p>
+<ul>
+<li>≥ <strong>70% empirical coverage</strong></li>
+<li>As <strong>narrow</strong> as possible (small PIW)</li>
+</ul>
+<hr />
+<h2 id="data-construction">2. Data Construction</h2>
+<h3 id="game-level-dataset">Game-Level Dataset</h3>
+<ul>
+<li><p>One row per <strong>team-game</strong> initially</p></li>
+<li><p>Later merged into <strong>one row per game</strong> (home +
+away)</p></li>
+<li><p>Filters applied:</p>
+<ul>
+<li>Postseason games removed</li>
+<li>Neutral-site games handled explicitly</li>
+<li>COVID season (2020–21) excluded from modeling runs</li>
+</ul></li>
+</ul>
+<h3 id="target-variables">Target Variables</h3>
+<p>From merged second-half games:</p>
+<ul>
+<li><code>home_score</code></li>
+<li><code>away_score</code></li>
+<li><code>spread</code></li>
+<li><code>total</code></li>
+</ul>
+<hr />
+<h2 id="temporal-structure-midseason-definition">3. Temporal Structure
+&amp; Midseason Definition</h2>
+<ul>
+<li><strong>Midseason is defined as a calendar date</strong>, not a game
+count.</li>
+<li>All <strong>first-half games</strong> (before midseason date) are
+used to construct features.</li>
+<li>All <strong>second-half games</strong> are prediction targets.</li>
+<li>This avoids leakage and preserves real-world forecasting
+structure.</li>
+</ul>
+<hr />
+<h2 id="feature-engineering-first-half-team-season-features">4. Feature
+Engineering (First-Half Team-Season Features)</h2>
+<p>All predictive features are computed <strong>only from first-half
+games</strong>, then merged into second-half matchups.</p>
+<h3 id="core-efficiency-production">Core Efficiency &amp;
+Production</h3>
+<ul>
+<li>Points, opponent points, margin</li>
+<li>Offensive / defensive / net ratings</li>
+<li>Pace</li>
+<li>Shooting efficiency (FG%, 3P%, FT%)</li>
+<li>Free throw rate</li>
+<li>Turnover rate</li>
+<li>Rebounding (ORB, DRB)</li>
+<li>Assists, fouls</li>
+</ul>
+<h3 id="form-features">Form Features</h3>
+<ul>
+<li><p>Rolling last-5 games:</p>
+<ul>
+<li>Net rating</li>
+<li>Margin</li>
+<li>Points per game</li>
+</ul></li>
+</ul>
+<h3 id="acc-only-performance">ACC-Only Performance</h3>
+<ul>
+<li><p>ACC net rating</p></li>
+<li><p>ACC margin</p></li>
+<li><p>ACC win %</p></li>
+<li><p>If a team had <strong>no ACC games</strong> in the first half
+case: michigan, ohio state, baylor 2026:</p>
+<ul>
+<li>ACC features are imputed using <strong>overall first-half
+performance</strong></li>
+</ul></li>
+</ul>
+<h3 id="venue-splits">Venue Splits</h3>
+<ul>
+<li><p>Home-team home net rating</p></li>
+<li><p>Away-team away net rating</p></li>
+<li><p>Combined as:</p>
+<ul>
+<li><code>venue_net_rtg_diff = home_home_net_rtg − away_away_net_rtg</code></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="feature-representations-tested">5. Feature Representations
+Tested</h2>
+<p>Multiple representations were explicitly compared:</p>
+<h3 id="raw">RAW</h3>
+<ul>
+<li>Home and away features kept separately
+(<code>home_net_rtg_mean</code>, <code>away_net_rtg_mean</code>,
+etc.)</li>
+</ul>
+<h3 id="diff">DIFF</h3>
+<ul>
+<li>Home − away differences for all team features</li>
+</ul>
+<h3 id="both">BOTH</h3>
+<ul>
+<li>RAW + DIFF together</li>
+</ul>
+<h3 id="hybrid-final-direction">HYBRID (final direction)</h3>
+<ul>
+<li>Core DIFF features</li>
+<li>Select RAW context features</li>
+<li>Minimal categorical encoding</li>
+</ul>
+<p><strong>Key finding:</strong> DIFF representations consistently
+outperformed RAW alone and were more stable across seasons.</p>
+<hr />
+<h2 id="ap-poll-features-minimal-corrected">6. AP Poll Features
+(Minimal, Corrected)</h2>
+<p>Rather than overengineering rankings, a <strong>minimal and
+defensible set</strong> was used.</p>
+<h3 id="midseason-ranking">Midseason Ranking</h3>
+<ul>
+<li><p><code>rank_midseason</code></p>
+<ul>
+<li>AP rank if ranked at midseason</li>
+<li><code>NaN</code> if unranked</li>
+</ul></li>
+<li><p><code>ranked_midseason</code></p>
+<ul>
+<li>Binary indicator derived from <code>rank_midseason</code></li>
+</ul></li>
+</ul>
+<h3 id="first-half-ranking-exposure">First-Half Ranking Exposure</h3>
+<ul>
+<li><p><code>ranked_share_pre</code></p>
+<ul>
+<li>Share of first-half games in which the team was ranked</li>
+<li>Filled with <strong>0</strong> if never ranked</li>
+</ul></li>
+</ul>
+<h3 id="performance-vs-ranked-opponents">Performance vs Ranked
+Opponents</h3>
+<ul>
+<li><code>net_rtg_vs_ranked_opp_pre</code></li>
+<li><code>margin_vs_ranked_opp_pre</code></li>
+</ul>
+<p>If a team played <strong>no ranked opponents</strong> in the first
+half:</p>
+<ul>
+<li>These features are imputed as:</li>
+</ul>
+<pre><code>overall performance − average observed drop vs ranked teams</code></pre>
+<p>Empirically estimated drops:</p>
+<ul>
+<li>Net rating drop ≈ <strong>−18</strong></li>
+<li>Margin drop ≈ <strong>−12</strong></li>
+</ul>
+<p>This preserves team ordering and avoids artificial zeros.</p>
+<hr />
+<h2 id="categorical-variables">7. Categorical Variables</h2>
+<ul>
+<li><p><code>home_team</code>, <code>away_team</code></p></li>
+<li><p>One-hot encoded via <code>ColumnTransformer</code></p></li>
+<li><p>Left in intentionally to allow the model to capture:</p>
+<ul>
+<li>Program-level effects</li>
+<li>Coaching/system persistence</li>
+</ul></li>
+<li><p>Empirically helpful for tree models</p></li>
+</ul>
+<hr />
+<h2 id="modeling-approach">8. Modeling Approach</h2>
+<h3 id="models-tested">Models Tested</h3>
+<ul>
+<li>Linear Regression</li>
+<li>Ridge Regression</li>
+<li>Elastic Net</li>
+<li>Random Forest</li>
+<li>Gradient Boosted Trees (sklearn)</li>
+<li>(LightGBM explored conceptually)</li>
+</ul>
+<h3 id="best-performer">Best Performer</h3>
+<ul>
+<li><p><strong>Random Forest</strong> was:</p>
+<ul>
+<li>Most stable</li>
+<li>Best MAE across rolling seasons</li>
+<li>Most robust to feature noise optuna used for parameters</li>
+</ul></li>
+</ul>
+<h3 id="multi-output-exploratory">Multi-Output (Exploratory)</h3>
+<ul>
+<li><p>RF wrapped in <code>MultiOutputRegressor</code> to predict:</p>
+<ul>
+<li>home_score</li>
+<li>away_score</li>
+<li>spread</li>
+<li>total</li>
+</ul></li>
+<li><p>Final evaluation still focused on <strong>spread
+only</strong></p></li>
+</ul>
+<hr />
+<h2 id="evaluation-strategy">9. Evaluation Strategy</h2>
+<h3 id="rolling-evaluation">Rolling Evaluation</h3>
+<ul>
+<li><p>Test on each second-half season</p></li>
+<li><p>Train on <strong>prior seasons only</strong></p></li>
+<li><p>Final version uses a <strong>6-season rolling training
+window</strong></p>
+<ul>
+<li>Reduces non-stationarity</li>
+<li>Better reflects real deployment</li>
+</ul></li>
+</ul>
+<h3 id="metrics-reported">Metrics Reported</h3>
+<ul>
+<li>Mean MAE</li>
+<li>Std. dev. of MAE (stability)</li>
+<li>Best / worst season</li>
+<li>Most recent season MAE (e.g. 2024–25)</li>
+</ul>
+<hr />
+<h2 id="feature-selection-philosophy">10. Feature Selection
+Philosophy</h2>
+<ul>
+<li><p><strong>No blind pruning</strong></p></li>
+<li><p>Features removed <strong>only if MAE improved
+empirically</strong></p></li>
+<li><p>all diffs were basically kept in the end</p></li>
+</ul>
+<hr />
+<hr />
+<h2 id="prediction-intervals-second-phase">12. Prediction Intervals
+(Second Phase)</h2>
+<h3 id="method">Method</h3>
+<ul>
+<li><strong>Split conformal prediction</strong> for spread only</li>
+<li>Model trained on <code>fit</code> seasons</li>
+<li>Calibration performed on recent seasons</li>
+</ul>
+<h3 id="two-calibration-strategies">Two Calibration Strategies</h3>
+<ol type="1">
+<li><p><strong>Rolling calibration</strong></p>
+<ul>
+<li>Calibrate on the <strong>prior 4 seasons</strong> before each test
+season</li>
+</ul></li>
+<li><p><strong>Fixed calibration (deployment)</strong></p>
+<ul>
+<li>Use most recent 3–5 seasons to calibrate once</li>
+<li>Apply to upcoming season predictions</li>
+</ul></li>
+</ol>
+<h3 id="interval-construction">Interval Construction</h3>
+<ul>
+<li><p>Absolute residuals from calibration</p></li>
+<li><p>Conformal quantile <code>q</code></p></li>
+<li><p>Interval:</p>
+<pre><code>[pred − q, pred + q]</code></pre></li>
+</ul>
+<h3 id="targets">Targets</h3>
+<ul>
+<li>Coverage ≥ 70%</li>
+<li>Minimize Prediction Interval Width (PIW)</li>
+</ul>
+<hr />
+<h2 id="final-outcomes-insights">13. Final Outcomes &amp; Insights</h2>
+<ul>
+<li>Best MAE ≈ <strong>9.2–9.4 points</strong></li>
+<li>Random Forest + HYBRID/DIFF features consistently strongest</li>
+<li>AP Poll features added modest context but were not dominant</li>
+<li>Ranked-opponent proportional features were unstable and
+discarded</li>
+<li>Absolute performance differences were more reliable</li>
+<li>Interval calibration behaved sensibly with rolling windows</li>
+</ul>
+<hr />
+<h2 id="project-strengths">14. Project Strengths</h2>
+<ul>
+<li>Strict temporal integrity (no leakage)</li>
+<li>Multiple feature representations tested</li>
+<li>Rolling evaluation aligned with deployment</li>
+<li>Intervals handled carefully and transparently</li>
+<li>Modeling decisions justified empirically</li>
+</ul>
+<hr />
+<h2 id="where-this-could-go-next">15. Where This Could Go Next</h2>
+<ul>
+<li>Team-specific conformal intervals</li>
+<li>Separate home/away uncertainty modeling</li>
+<li>Market comparison (Vegas spreads vs model)</li>
+<li>Incorporating lineup/injury data if available</li>
+</ul>
+<hr />
+<p>this is in chatgpt word - about to give you i my word and some
+csvs</p>
+<p>The challenge was to, at feb6, predict spread (home-away) for all acc
+games in the restof the season so we had to train a model that would use
+first half of the season games to predict the spread for second half
+used R to load game data from p2014-2025 using ncaahoopR for acc teams.
+box scores were appended. moved to python removed post season added
+midpoint date appended ap poll stats computed ratings like df[“off_rtg”]
+= 100 * safe_div(df[“pts”], df[“possessions”]) df[“def_rtg”] = 100 *
+safe_div(df[“opp_pts”], df[“opp_possessions”]) df[“net_rtg”] =
+df[“off_rtg”] - df[“def_rtg”]</p>
+<p>split on midseason</p>
+<p>started computing stats for each team which will be evident later
+when i list features stats were by season, by team, only first half</p>
+<p>everything was stripped from second half but date, teams, who
+hom/away, and spread appended home steam first season stats and away
+team first half season stats for each game</p>
+<p>these were RAW stats. created DIFF stats which were home stats - away
+stats. since thats how spread is calculated</p>
+<p>each of the 5 model types were tested on raw, diff, both, hybrid.
+diff won every time</p>
+<p>cv was done like: def rolling_eval(model, model_name, window=None):
+rows = []</p>
+<pre><code>for test_season in TEST_SEASONS:
+    idx = season_order.index(test_season)
+    prior_seasons = season_order[:idx]
+
+    # apply rolling window if requested
+    if window is not None:
+        prior_seasons = prior_seasons[-window:]
+
+    train_mask = seasons.isin(prior_seasons)
+    test_mask  = seasons.eq(test_season)
+
+    # safety check (quiet skip, same spirit as your original)
+    if train_mask.sum() == 0 or test_mask.sum() == 0:
+        continue
+
+    X_train, y_train = X.loc[train_mask], y.loc[train_mask]
+    X_test,  y_test  = X.loc[test_mask],  y.loc[test_mask]
+
+    m = clone(model)
+    m.fit(X_train, y_train)
+    yhat = m.predict(X_test)
+
+    mae = mean_absolute_error(y_test, yhat)
+
+    rows.append({
+        &quot;model&quot;: model_name,
+        &quot;test_season&quot;: test_season,
+        &quot;n_games&quot;: int(test_mask.sum()),
+        &quot;mae&quot;: float(mae),
+        &quot;n_train_seasons&quot;: len(prior_seasons),
+    })
+
+return pd.DataFrame(rows)</code></pre>
+<p>rf consistently was the best. optimized by trying compos of features
+- some based on importance. used optuna for params. got mean mae to
+9.186</p>
+<p>feats: [‘home_team’, ‘away_team’, ‘days_since_midseason’,
+‘rest_days_home’, ‘rest_days_away’, ‘rest_diff’,
+‘home_ranked_midseason’, ‘away_ranked_midseason’, ‘home_rank_midseason’,
+‘away_rank_midseason’, ‘pts_pg_diff’, ‘opp_pts_pg_diff’,
+‘margin_pg_diff’, ‘off_rtg_mean_diff’, ‘def_rtg_mean_diff’,
+‘net_rtg_mean_diff’, ‘pace_mean_diff’, ‘fg_pct_mean_margin_diff’,
+‘tp_pct_mean_margin_diff’, ‘ft_pct_mean_margin_diff’,
+‘ft_rate_mean_margin_diff’, ‘tov_rate_mean_margin_diff’,
+‘ast_pg_margin_diff’, ‘orb_pg_margin_diff’, ‘drb_pg_margin_diff’,
+‘pf_pg_margin_diff’, ‘win_pct_diff’, ‘net_rtg_last5_diff’,
+‘margin_last5_diff’, ‘pts_pg_last5_diff’, ‘acc_net_rtg_mean_diff’,
+‘acc_margin_pg_diff’, ‘acc_win_pct_diff’, ‘venue_net_rtg_diff’,
+‘margin_vs_ranked_opp_diff’, ‘net_rtg_vs_ranked_opp_diff’]</p>
+<p>then went back to r for 2025-26 data - had to hadd the games for
+baylor, mich, ohio state - bc there were 3 non acc games.</p>
+<p>then did te same process and ran the model on it to get predictions
+to submit.</p>
+<p>intervals was also a part of the project def
+weighted_quantile(values, weights, quantile): “““Compute weighted
+quantile of 1D arrays.”“” values = np.asarray(values) weights =
+np.asarray(weights)</p>
+<pre><code>sorter = np.argsort(values)
+values = values[sorter]
+weights = weights[sorter]
+
+cum_w = np.cumsum(weights)
+cutoff = quantile * cum_w[-1]
+return values[np.searchsorted(cum_w, cutoff, side=&quot;left&quot;)]</code></pre>
+<p>def season_recency_weights(seasons, season_to_idx,
+covid_season=“2020-21”, power=2, covid_weight=0.0): ““” seasons:
+array-like of season labels for calibration rows power: 1=linear,
+2=quadratic covid_weight: 0.0 excludes COVID season from calibration ““”
+idx = np.array([season_to_idx[s] for s in seasons]) w = 1.0 + (idx **
+power)</p>
+<pre><code>if covid_season is not None:
+    w = np.where(np.array(seasons) == covid_season, covid_weight, w)
+
+return w</code></pre>
+<p>def conformal_q(abs_resid, coverage=0.70): n = len(abs_resid) k =
+int(np.ceil((n + 1) * coverage)) - 1 return
+np.sort(abs_resid)[min(max(k, 0), n - 1)]</p>
+<p>cov_by_season = [] piw_by_season = []</p>
+<p>for season_test in TEST_SEASONS:</p>
+<pre><code>season_order = [s for s in season_order if s != &quot;2020-21&quot;]
+TEST_SEASONS  = [s for s in TEST_SEASONS  if s != &quot;2020-21&quot;]
+
+# training seasons = all before test season
+idx_test = season_order.index(season_test)
+train_seasons = season_order[:idx_test]
+
+train_mask = seasons.isin(train_seasons)
+test_mask  = seasons.eq(season_test)
+
+# calibration season = most recent training season
+cal_season = train_seasons[-1]
+cal_mask = seasons.eq(cal_season)
+
+# fit seasons = training minus calibration season
+fit_mask = train_mask &amp; (~cal_mask)
+
+X_fit, y_fit = X.loc[fit_mask], y.loc[fit_mask]
+X_cal, y_cal = X.loc[cal_mask], y.loc[cal_mask]
+X_te,  y_te  = X.loc[test_mask], y.loc[test_mask]
+
+model = clone(rf_model)
+model.fit(X_fit, y_fit)
+
+# calibration residuals
+cal_pred = model.predict(X_cal)
+abs_resid = np.abs(y_cal - cal_pred)
+
+q = conformal_q(abs_resid, coverage=0.75)
+
+# test intervals
+pred = model.predict(X_te)
+lb = pred - q
+ub = pred + q
+
+coverage = float(np.mean((y_te &gt;= lb) &amp; (y_te &lt;= ub)))
+piw = float(np.mean(ub - lb))
+
+cov_by_season.append({&quot;season&quot;: season_test, &quot;coverage&quot;: coverage, &quot;q&quot;: float(q)})
+piw_by_season.append({&quot;season&quot;: season_test, &quot;piw&quot;: piw})</code></pre>
+<p>cov_by_season = pd.DataFrame(cov_by_season).sort_values(“season”)
+piw_by_season = pd.DataFrame(piw_by_season).sort_values(“season”)</p>
+<p>coverage used was .75 to be safe but still have a low piw</p>
+<p>about to send csvs- dont say nun yet</p>
+<p>The challenge was to predict the point spread (home − away) for all
+remaining ACC men’s basketball games starting on February 6, using only
+information available up to that date.</p>
+<p>To do this, I trained a model that uses first-half-of-season games to
+predict outcomes in the second half of the season, mirroring how a real
+forecasting system would operate.</p>
+<p>Game-level data from 2014–2025 was collected in R using ncaahoopR for
+all ACC teams, with full box scores appended. The data was then
+transferred to Python for modeling. Postseason games were removed, and a
+midseason calendar date was defined to separate feature construction
+from prediction targets.</p>
+<p>Offensive, defensive, and net ratings were computed using
+possession-based metrics, for example:</p>
+<p>offensive rating = points per 100 possessions defensive rating =
+opponent points per 100 possessions net rating = offensive −
+defensive</p>
+<p>All team statistics were computed by team and season using only
+first-half games. For second-half games, all performance information was
+stripped away, leaving only date, teams, home/away designation, and the
+target spread.</p>
+<p>Each second-half game was then merged with:</p>
+<p>the home team’s first-half season stats the away team’s first-half
+season stats</p>
+<p>This produced a RAW feature representation. From this, a DIFF
+representation was constructed by taking home − away differences for all
+team features, which directly aligns with how the spread is defined.</p>
+<p>Five model families were evaluated (linear models, tree-based models,
+and ensembles), each tested using RAW, DIFF, BOTH, and HYBRID feature
+sets. Across all models and seasons, DIFF features consistently
+outperformed RAW representations.</p>
+<p>Model evaluation used rolling season-based cross-validation, where
+each season’s second-half games were predicted using only prior seasons
+for training. A rolling training window was optionally applied to reduce
+non-stationarity.</p>
+<p>A Random Forest model was consistently the best-performing approach.
+Feature selection was performed empirically based on performance and
+importance diagnostics, and hyperparameters were optimized using Optuna,
+resulting in a final mean MAE of ≈ 9.19 points on second-half spread
+predictions.</p>
+<p>The final model used a DIFF-based feature set including efficiency
+metrics, recent form, ACC-only performance, venue-adjusted ratings, rest
+effects, and performance versus ranked opponents, along with team
+identifiers to capture program-level effects.</p>
+<p>For submission, the same pipeline was applied to 2025–26 data.
+Because early-season schedules included several non-ACC opponents (e.g.,
+Baylor, Michigan, Ohio State), those games were explicitly added to
+ensure first-half feature completeness before generating predictions for
+the remaining ACC games.</p>
+<ol start="2" type="1">
+<li>Prediction intervals (explained cleanly)</li>
+</ol>
+<p>In addition to point predictions, the project also constructed
+prediction intervals for the spread using split conformal
+prediction.</p>
+<p>For each test season:</p>
+<p>The model was trained on all earlier seasons except the most recent
+one The most recent prior season was used for calibration Absolute
+residuals from the calibration season determined the conformal
+radius</p>
+<p>Prediction intervals were formed as:</p>
+<p>[prediction − q, prediction + q]</p>
+<p>A coverage level of 75% was used to be conservative while still
+keeping intervals reasonably tight. Interval quality was evaluated
+using:</p>
+<p>empirical coverage prediction interval width (PIW)</p>
+<p>Rolling calibration behaved consistently across seasons, producing
+stable coverage with manageable interval widths.</p>
+<p>PREDICTION INTERVAL CONSTRUCTION FOR ACC MEN’S BASKETBALL SPREAD
+FORECASTS</p>
+<p>Overview In addition to producing point predictions for the ACC men’s
+basketball point spread (home − away), we constructed prediction
+intervals to quantify uncertainty in second-half game forecasts. The
+objective was to achieve at least 70% empirical coverage while keeping
+prediction intervals as narrow as possible. All intervals were built on
+top of our final spread prediction model and adhered to strict temporal
+constraints to avoid leakage.</p>
+<p>Underlying Point Prediction Model The base model predicts second-half
+spreads using a Random Forest regression model trained on
+first-half-of-season data only. Features were constructed using a DIFF
+representation, where each feature is defined as the difference between
+home-team and away-team first-half season statistics. This
+representation consistently outperformed RAW (separate home/away)
+features across all tested model families.</p>
+<p>Model evaluation followed a rolling season framework. For each
+season, the model was trained using only prior seasons and evaluated on
+that season’s second-half games. A full historical training window was
+used for stability. The final model achieved a mean MAE of approximately
+9.2 points across rolling evaluations and served as the foundation for
+interval construction.</p>
+<p>Prediction Interval Method Prediction intervals were constructed
+using split conformal prediction. This approach was selected because it
+makes minimal distributional assumptions, provides finite-sample
+coverage guarantees, and integrates naturally with rolling season-based
+evaluation.</p>
+<p>For each test season: - The model was trained on all seasons prior to
+the most recent one. - The most recent prior season was used as a
+calibration set. - Absolute residuals between predicted and observed
+spreads were computed on the calibration season.</p>
+<p>Let r_i = |y_i − ŷ_i| denote the absolute calibration residuals. The
+conformal radius q was computed as the empirical quantile corresponding
+to a nominal coverage level of 75%, chosen conservatively to ensure
+coverage exceeded the required 70%.</p>
+<p>Prediction intervals for each test-game prediction ŷ were then
+constructed as: [ ŷ − q , ŷ + q ]</p>
+<p>Evaluation of Prediction Intervals Prediction intervals were
+evaluated on a season-by-season basis using: - Empirical coverage: the
+proportion of games where the true spread fell within the interval. -
+Prediction interval width (PIW): the average width of the intervals.</p>
+<p>This rolling calibration and evaluation structure mirrors real
+deployment, where only past seasons are available for uncertainty
+estimation. The selected approach consistently met or exceeded 70%
+coverage while achieving one of the lowest average interval widths among
+tested calibration strategies.</p>
+<p>Final Submission The submitted file includes both point predictions
+and prediction intervals for second-half ACC games. All predictions rely
+exclusively on information available prior to February 6, with a natural
+two-day scheduling break ensuring clean separation between first-half
+feature construction and second-half prediction targets.</p>
+</body>
+</html>
