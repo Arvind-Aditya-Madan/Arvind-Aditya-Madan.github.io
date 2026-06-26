@@ -32,6 +32,41 @@ h1{font-size:clamp(2.8rem,7vw,6.4rem);line-height:.9;letter-spacing:-.075em;marg
 .split{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}.panel{background:#fff;border:1px solid var(--line);border-radius:28px;padding:26px;box-shadow:0 16px 44px rgba(19,41,75,.06)}.panel h3{color:var(--navy);font-size:1.35rem;margin:0 0 14px}.skill-group{margin-bottom:20px}.skill-group:last-child{margin-bottom:0}.skill-group h4{margin:0 0 10px;color:#203850;font-size:.95rem}.edu-item{border-left:5px solid var(--unc);padding-left:16px;margin:16px 0}.edu-item strong{color:var(--navy);display:block}.course-list{margin:0;padding-left:1.15rem;color:#384d62;line-height:1.75}.course-list li{margin:0 0 .22rem}
 .connect{margin:60px 0 80px;background:linear-gradient(135deg,#eef8ff,#fff);border:1px solid var(--line);border-radius:34px;padding:36px;text-align:center;box-shadow:var(--shadow)}.connect h2{font-size:clamp(2rem,5vw,4.2rem);letter-spacing:-.065em;color:var(--navy);margin:0 0 12px}.connect p{color:#3d5368;line-height:1.7;max-width:700px;margin:0 auto 24px}.footer{border-top:1px solid var(--line);padding:28px 22px;text-align:center;color:var(--muted)}
 @media(max-width:900px){.hero-grid,.project-card.featured,.split{grid-template-columns:1fr}.project-card.featured{grid-column:span 1}.project-grid{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:12px}.hero-card{max-width:390px}.stats-row{grid-template-columns:1fr}.nav-links{display:none}.experience-header{display:block}.company-badge{margin-top:14px;width:max-content}}
+
+/* UNC Baseball card: no image, stats as the visual focus */
+.project-card.featured.no-image{
+  display:flex;
+  grid-column:span 2;
+  min-height:0;
+}
+.project-card.stat-focus{
+  background:linear-gradient(135deg,#ffffff,#f6fbff);
+}
+.project-card.stat-focus .stats-row{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  margin:10px 0 4px;
+}
+.project-card.stat-focus .stat{
+  background:linear-gradient(135deg,#eef8ff,#ffffff);
+  border-color:#bfe3fa;
+  padding:22px;
+  box-shadow:0 12px 28px rgba(75,156,211,.12);
+}
+.project-card.stat-focus .stat strong{
+  font-size:2.12rem;
+  color:var(--unc);
+}
+.project-card.stat-focus .stat span{
+  font-size:.9rem;
+  color:#455e76;
+}
+@media(max-width:900px){
+  .project-card.stat-focus .stats-row{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .project-card.stat-focus .stats-row{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -71,22 +106,20 @@ h1{font-size:clamp(2.8rem,7vw,6.4rem);line-height:.9;letter-spacing:-.075em;marg
       <p>Machine learning projects, sports analytics tools, and applied reports with live apps, full writeups, or project documentation where available.</p>
     </div>
     <div class="project-grid">
-      <article class="project-card featured">
+      <article class="project-card featured no-image stat-focus">
         <div>
           <p class="project-meta">MADS Capstone • UNC Athletics • Forecasting + Streamlit</p>
           <h3>UNC Baseball Attendance Forecasting</h3>
           <p>Built an end-to-end attendance forecasting framework and decision-support app for UNC baseball home games. The project used schedule context, attendance history, weather, academic calendar timing, Google Trends, promotions, and team performance data to support planning for staffing, marketing, concessions, and operations.</p>
           <p>My work focused on data cleaning, feature engineering, master dataset integration, weighted rolling validation, preseason workflow adaptation, and weather/attendance feature engineering.</p>
-          <div class="stats-row">
+          <div class="stats-row stat-highlight">
             <div class="stat"><strong>326</strong><span>two-day-ahead RMSE</span></div>
+            <div class="stat"><strong>260</strong><span>two-day-ahead MAE</span></div>
             <div class="stat"><strong>0.805</strong><span>two-day-ahead R²</span></div>
             <div class="stat"><strong>88%</strong><span>within 500 attendees</span></div>
           </div>
           <div class="tag-row"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">Streamlit</span><span class="tag">Optuna</span><span class="tag">SHAP</span><span class="tag">Forecasting</span></div>
           <div class="project-links"><a class="text-link" href="https://unc-baseball-attendance-forecasting.streamlit.app/" target="_blank" rel="noopener">Live App</a><a class="text-link" href="reports/unc-baseball-attendance-report.html">Full Report</a></div>
-        </div>
-        <div class="image-stack">
-          <img class="screenshot" src="assets/unc/average_home_attendance.png" alt="UNC baseball average attendance by season chart" />
         </div>
       </article>
 
@@ -183,8 +216,8 @@ h1{font-size:clamp(2.8rem,7vw,6.4rem);line-height:.9;letter-spacing:-.075em;marg
   <section class="container" id="connect">
     <div class="connect">
       <div class="section-kicker">Let’s connect</div>
-      <h2>Open to talking data, sports, and ML.</h2>
-      <p>I’m currently growing at ClicMotion, but I’m always interested in sports analytics, machine learning projects, and applied data science work that turns complex data into clear decisions.</p>
+      <h2>Let’s connect.</h2>
+      <p>This portfolio is a collection of selected academic, professional, and independent data science projects. Feel free to reach out with questions, feedback, or shared interests in machine learning and sports analytics.</p>
       <div class="hero-actions" style="justify-content:center"><a class="button" href="mailto:arvind@themadans.net">arvind@themadans.net</a><a class="button secondary" href="https://www.linkedin.com/in/arvind-aditya-madan-08271174/" target="_blank" rel="noopener">LinkedIn</a><a class="button secondary" href="https://github.com/Arvind-Aditya-Madan" target="_blank" rel="noopener">GitHub</a><a class="button secondary" href="reports/arvind-aditya-madan-resume.pdf" target="_blank">Resume PDF</a></div>
     </div>
   </section>
