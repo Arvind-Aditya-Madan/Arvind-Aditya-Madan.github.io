@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="900" height="380" fill="#13294B" rx="8"/>
+
+  <defs>
+    <pattern id="nodata" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#1E3A5A" stroke-width="1.5" opacity="0.6"/>
+    </pattern>
+  </defs>
+
+  <!-- Title -->
+  <text x="440" y="28" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">Dataset Tiers: Feature Availability Over Time</text>
+  <text x="440" y="46" text-anchor="middle" fill="#94A3B8" font-size="10" font-family="Calibri, Arial, sans-serif">Each tier adds new data sources but reduces training history. The pipeline tests all 5 to find the optimal trade-off.</text>
+
+  <!-- Year axis: x=200 to 755, span=555px, 26 years -->
+  <!-- 1999=200, 2009=414, 2013=499, 2016=563, 2019=627, 2025=755 -->
+  <g fill="#94A3B8" font-size="9" font-family="Calibri, Arial, sans-serif" font-weight="600">
+    <text x="200" y="68" text-anchor="middle">1999</text>
+    <text x="414" y="68" text-anchor="middle">2009</text>
+    <text x="499" y="68" text-anchor="middle">2013</text>
+    <text x="563" y="68" text-anchor="middle">2016</text>
+    <text x="627" y="68" text-anchor="middle">2019</text>
+    <text x="755" y="68" text-anchor="middle">2025</text>
+  </g>
+  <g stroke="#1E3A5A" stroke-width="0.8" opacity="0.6">
+    <line x1="200" y1="73" x2="200" y2="340"/>
+    <line x1="414" y1="73" x2="414" y2="340"/>
+    <line x1="499" y1="73" x2="499" y2="340"/>
+    <line x1="563" y1="73" x2="563" y2="340"/>
+    <line x1="755" y1="73" x2="755" y2="340"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LAYER 1: Row backgrounds + hatched no-data  -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- Tier 1 accent bar -->
+  <rect x="18" y="78" width="4" height="112" fill="#4B9CD3" rx="2"/>
+
+  <!-- T1 Row backgrounds -->
+  <rect x="24" y="80" width="735" height="32" fill="#0E2040" rx="3"/>
+  <rect x="24" y="116" width="735" height="32" fill="#0B1A30" rx="3"/>
+  <rect x="24" y="152" width="735" height="32" fill="#0E2040" rx="3"/>
+
+  <!-- T2 -->
+  <rect x="18" y="196" width="4" height="32" fill="#059669" rx="2"/>
+  <rect x="24" y="198" width="735" height="32" fill="#0B1A30" rx="3"/>
+  <rect x="200" y="204" width="214" height="20" fill="url(#nodata)" rx="2"/>
+
+  <!-- T3 -->
+  <rect x="18" y="240" width="4" height="32" fill="#E8A317" rx="2"/>
+  <rect x="24" y="242" width="735" height="32" fill="#0E2040" rx="3"/>
+  <rect x="200" y="248" width="299" height="20" fill="url(#nodata)" rx="2"/>
+
+  <!-- T4 -->
+  <rect x="18" y="284" width="4" height="32" fill="#E8834A" rx="2"/>
+  <rect x="24" y="286" width="735" height="32" fill="#0B1A30" rx="3"/>
+  <rect x="200" y="292" width="363" height="20" fill="url(#nodata)" rx="2"/>
+
+  <!-- T5 -->
+  <rect x="18" y="328" width="4" height="32" fill="#7B4F9D" rx="2"/>
+  <rect x="24" y="330" width="735" height="32" fill="#0E2040" rx="3"/>
+  <rect x="200" y="336" width="427" height="20" fill="url(#nodata)" rx="2"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LAYER 2: Colored data bars                  -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- T1 bars -->
+  <rect x="200" y="86" width="555" height="20" fill="#4B9CD3" opacity="0.85" rx="3"/>
+  <rect x="200" y="122" width="555" height="20" fill="#4B9CD3" opacity="0.85" rx="3"/>
+  <rect x="200" y="158" width="555" height="20" fill="#4B9CD3" opacity="0.85" rx="3"/>
+
+  <!-- T2 bar -->
+  <rect x="414" y="204" width="341" height="20" fill="#059669" opacity="0.85" rx="3"/>
+
+  <!-- T3 bar -->
+  <rect x="499" y="248" width="256" height="20" fill="#E8A317" opacity="0.85" rx="3"/>
+
+  <!-- T4 bar -->
+  <rect x="563" y="292" width="192" height="20" fill="#E8834A" opacity="0.85" rx="3"/>
+
+  <!-- T5 bar -->
+  <rect x="627" y="336" width="128" height="20" fill="#7B4F9D" opacity="0.85" rx="3"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LAYER 3: Red dotted line (in front of bars) -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <line x1="627" y1="73" x2="627" y2="362" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.45"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LAYER 4: All text (in front of everything)  -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- Row labels (left side) -->
+  <text x="192" y="101" text-anchor="end" fill="#FFFFFF" font-size="11" font-family="Calibri, Arial, sans-serif">Game / Attendance</text>
+  <text x="192" y="137" text-anchor="end" fill="#FFFFFF" font-size="11" font-family="Calibri, Arial, sans-serif">Weather</text>
+  <text x="192" y="173" text-anchor="end" fill="#FFFFFF" font-size="11" font-family="Calibri, Arial, sans-serif">Opponent / Schedule</text>
+  <text x="192" y="219" text-anchor="end" fill="#FFFFFF" font-size="11" font-family="Calibri, Arial, sans-serif">Google Trends</text>
+  <text x="192" y="263" text-anchor="end" fill="#FFFFFF" font-size="11" font-family="Calibri, Arial, sans-serif">Season Performance</text>
+  <text x="192" y="307" text-anchor="end" fill="#FFFFFF" font-size="11" font-family="Calibri, Arial, sans-serif">Academic Cal. + Enrollment</text>
+  <text x="192" y="351" text-anchor="end" fill="#FFFFFF" font-size="11" font-family="Calibri, Arial, sans-serif">Promotions</text>
+
+  <!-- Bar labels (on the colored bars) -->
+  <text x="478" y="100" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Calibri, Arial, sans-serif">1999 – 2025  (26 seasons)</text>
+  <text x="478" y="136" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Calibri, Arial, sans-serif">1999 – 2025  (26 seasons)</text>
+  <text x="478" y="172" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Calibri, Arial, sans-serif">1999 – 2025  (26 seasons)</text>
+  <text x="585" y="218" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Calibri, Arial, sans-serif">2009 – 2025  (16 seasons)</text>
+  <text x="627" y="262" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Calibri, Arial, sans-serif">2013 – 2025  (12 seasons)</text>
+  <text x="659" y="306" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Calibri, Arial, sans-serif">2016 – 2025  (9 seasons)</text>
+  <text x="691" y="350" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Calibri, Arial, sans-serif">2019 – 2025  (6 seasons)</text>
+
+  <!-- Right side tier labels + stats -->
+  <text x="775" y="100" fill="#4B9CD3" font-size="12" font-weight="700" font-family="Calibri, Arial, sans-serif">Tier 1</text>
+  <text x="775" y="116" fill="#FFFFFF" font-size="9" opacity="0.8" font-family="Calibri, Arial, sans-serif">916 games</text>
+  <text x="775" y="130" fill="#FFFFFF" font-size="9" opacity="0.8" font-family="Calibri, Arial, sans-serif">55 features</text>
+
+  <text x="775" y="211" fill="#059669" font-size="12" font-weight="700" font-family="Calibri, Arial, sans-serif">Tier 2</text>
+  <text x="775" y="227" fill="#FFFFFF" font-size="9" opacity="0.8" font-family="Calibri, Arial, sans-serif">618 games · 58 features</text>
+
+  <text x="775" y="255" fill="#E8A317" font-size="12" font-weight="700" font-family="Calibri, Arial, sans-serif">Tier 3</text>
+  <text x="775" y="271" fill="#FFFFFF" font-size="9" opacity="0.8" font-family="Calibri, Arial, sans-serif">458 games · 73 features</text>
+
+  <text x="775" y="299" fill="#E8834A" font-size="12" font-weight="700" font-family="Calibri, Arial, sans-serif">Tier 4</text>
+  <text x="775" y="315" fill="#FFFFFF" font-size="9" opacity="0.8" font-family="Calibri, Arial, sans-serif">347 games · 84 features</text>
+
+  <text x="775" y="343" fill="#7B4F9D" font-size="12" font-weight="700" font-family="Calibri, Arial, sans-serif">Tier 5</text>
+  <text x="775" y="359" fill="#FFFFFF" font-size="9" opacity="0.8" font-family="Calibri, Arial, sans-serif">238 games · 93 features</text>
+
+  <!-- Full coverage bottom label -->
+  <text x="627" y="375" text-anchor="middle" fill="#DC2626" font-size="9" font-weight="600" font-family="Calibri, Arial, sans-serif" opacity="0.7">↑ 2019: Full Coverage (All Sources)</text>
+</svg>
