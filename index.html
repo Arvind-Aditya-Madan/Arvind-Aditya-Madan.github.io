@@ -783,6 +783,25 @@ h1{font-size:clamp(2.8rem,7vw,6.4rem);line-height:.9;letter-spacing:-.075em;marg
   }
 }
 
+
+/* V9: more space before links on first two project cards */
+.project-grid > .project-card:nth-child(1) .project-links,
+.project-grid > .project-card:nth-child(2) .project-links{
+  margin-top:16px;
+}
+
+.project-grid > .project-card:nth-child(1) .tag-row,
+.project-grid > .project-card:nth-child(2) .tag-row{
+  margin-bottom:2px;
+}
+
+@media(max-width:820px){
+  .project-grid > .project-card:nth-child(1) .project-links,
+  .project-grid > .project-card:nth-child(2) .project-links{
+    margin-top:12px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -815,7 +834,7 @@ h1{font-size:clamp(2.8rem,7vw,6.4rem);line-height:.9;letter-spacing:-.075em;marg
       </div>
       <div class="hero-card">
         <img class="headshot" src="assets/arvind-headshot.jpg" alt="Arvind Aditya Madan headshot" />
-        <div class="mini-card"><strong>UNC MADS graduate and Junior Data Scientist at ClicMotion.</strong><p>Background in statistics, applied data science, and sports analytics, with experience turning raw information into polished deliverables.</p></div>
+        <div class="mini-card"><strong>UNC MADS graduate and<br>Jr. Data Scientist at ClicMotion.</strong><p>Background in statistics, applied data science, and sports analytics, with experience turning raw information into polished deliverables.</p></div>
       </div>
     </div>
   </section>
